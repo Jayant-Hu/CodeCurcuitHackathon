@@ -1,0 +1,2954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vitality - Your Complete Health Companion</title>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>tailwind.config={theme:{extend:{colors:{primary:'#4F46E5',secondary:'#10B981'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Inter', sans-serif;
+scroll-behavior: smooth;
+}
+.gradient-bg {
+background: linear-gradient(135deg, #4F46E5 0%, #10B981 100%);
+}
+.breathing-circle {
+animation: breathe 8s infinite ease-in-out;
+transform-origin: center;
+}
+@keyframes breathe {
+0%, 100% { transform: scale(0.8); opacity: 0.7; }
+50% { transform: scale(1.2); opacity: 1; }
+}
+.water-wave {
+position: relative;
+overflow: hidden;
+}
+.water-wave::after {
+content: "";
+position: absolute;
+bottom: 0;
+left: 0;
+right: 0;
+height: 0%;
+background: linear-gradient(0deg, rgba(79, 70, 229, 0.3) 0%, rgba(16, 185, 129, 0.1) 100%);
+border-radius: 0 0 8px 8px;
+transition: height 0.5s ease;
+}
+.cup-btn {
+transition: transform 0.3s ease;
+}
+.cup-btn:hover {
+transform: translateY(-5px);
+}
+.cup-btn:active {
+transform: scale(0.95);
+}
+.mood-btn {
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mood-btn:hover {
+transform: scale(1.1);
+box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+.mood-btn:active {
+transform: scale(0.95);
+}
+.card {
+transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+transform: translateY(-5px);
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+input[type="range"]::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 20px;
+height: 20px;
+border-radius: 50%;
+background: #4F46E5;
+cursor: pointer;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+-webkit-appearance: none;
+margin: 0;
+}
+.progress-ring-circle {
+transition: stroke-dashoffset 0.3s;
+transform: rotate(-90deg);
+transform-origin: 50% 50%;
+}
+</style>
+</head>
+<body class="bg-gray-50">
+<!-- Header -->
+<header class="sticky top-0 z-50 w-full bg-white shadow-md">
+<div class="container mx-auto px-4 py-3 flex items-center justify-between">
+<div class="flex items-center">
+<h1 class="text-2xl font-['Pacifico'] text-primary"><a href="mainpage.html"> Health Track</a></h1>
+
+</div>
+<nav class="hidden md:flex items-center space-x-8">
+<a href="#dashboard" class="text-gray-700 hover:text-primary font-medium transition-colors">Dashboard</a>
+
+<a href="mood.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Mood</a>
+<a href="water.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Water</a>
+<a href="fitandsleep.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Fitness</a>
+<a href="fitandsleep.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Sleep</a>
+<a href="breath.html" class="text-gray-700 hover:text-primary font-medium transition-colors">Breathe</a>
+</nav>
+<div class="flex items-center space-x-4">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+<i class="ri-notification-3-line text-gray-700"></i>
+</div>
+<a href="login.html">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+<i class="ri-user-line text-gray-700"></i>
+</div>
+</a>
+<button class="md:hidden w-10 h-10 flex items-center justify-center" id="mobile-menu-button">
+<i class="ri-menu-line text-xl"></i>
+</button>
+</div>
+</div>
+<!-- Mobile Menu -->
+<div id="mobile-menu" class="hidden md:hidden bg-white border-t">
+<div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+<a href="mainpage.html"py-2 text-gray-700 hover:text-primary font-medium">Dashboard</a>
+<a href="mood.html" class="py-2 text-gray-700 hover:text-primary font-medium">Mood</a>
+<a href="water.html" class="py-2 text-gray-700 hover:text-primary font-medium">Water</a>
+<a href="fitandsleep.html" class="py-2 text-gray-700 hover:text-primary font-medium">Fitness</a>
+<a href="fitandsleep.html" class="py-2 text-gray-700 hover:text-primary font-medium">Sleep</a>
+<a href="breath.html" class="py-2 text-gray-700 hover:text-primary font-medium">Breath</a>
+</div>
+</div>
+</header>
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-r from-primary/90 to-primary/30"></div>
+  <div class="absolute inset-0" style="background-image: url('https://readdy.ai/api/search-image?query=A%20modern%20and%20minimalist%20wellness%20scene%20with%20abstract%20geometric%20shapes%2C%20flowing%20curves%2C%20and%20a%20soft%20gradient%20background.%20The%20composition%20features%20elegant%20design%20elements%20that%20suggest%20health%20and%20vitality%2C%20with%20a%20sophisticated%20color%20palette%20of%20blues%20and%20teals.%20Clean%20lines%20and%20contemporary%20aesthetics%20create%20a%20sense%20of%20harmony%20and%20balance&width=1920&height=800&seq=hero2&orientation=landscape'); background-size: cover; background-position: center; opacity: 0.9;"></div>
+  <div class="container mx-auto px-4 py-32 relative z-10">
+    <div class="max-w-3xl mx-auto text-center">
+      <h1 class="text-5xl md:text-7xl font-bold text-white mb-6">Transform Your Health Journey</h1>
+      <p class="text-xl text-white/90 mb-10">Experience a smarter way to track your wellness with our comprehensive health dashboard. Personalized insights, real-time tracking, and actionable recommendations.</p>
+      <div class="flex flex-wrap justify-center gap-4">
+        <button class="bg-white text-primary px-8 py-4 rounded-button font-medium shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 whitespace-nowrap text-lg">
+          Start Your Journey
+        </button>
+        <button class="bg-white/20 text-white border-2 border-white px-8 py-4 rounded-button font-medium shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 whitespace-nowrap text-lg backdrop-blur-sm">
+          Watch Demo
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
+</section>
+<!-- Features Overview -->
+<section class="py-24 bg-white">
+  <div class="container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-gray-900 mb-6">Comprehensive Health Tracking</h2>
+      <p class="text-xl text-gray-600 max-w-3xl mx-auto">Monitor all aspects of your wellbeing in one beautiful, intuitive dashboard.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div class="relative group">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <img src="https://readdy.ai/api/search-image?query=A%20peaceful%20meditation%20and%20mindfulness%20scene%20with%20soft%2C%20calming%20colors.%20Modern%20minimalist%20style%20showing%20a%20person%20in%20a%20serene%20environment%20with%20subtle%20mood%20tracking%20elements.%20Clean%2C%20uncluttered%20composition%20with%20gentle%20lighting&width=600&height=400&seq=mood1&orientation=landscape" alt="Mood Tracking" class="w-full h-[300px] object-cover rounded-xl">
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all">
+          <h3 class="text-2xl font-bold mb-2">Mood Tracking</h3>
+          <p class="text-white/90">Monitor your emotional wellbeing with our intuitive mood tracking system.</p>
+        </div>
+      </div>
+      <div class="relative group">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <img src="https://readdy.ai/api/search-image?query=A%20modern%20fitness%20and%20exercise%20scene%20with%20dynamic%20composition.%20Clean%2C%20minimalist%20gym%20environment%20with%20subtle%20workout%20tracking%20elements.%20Contemporary%20aesthetic%20with%20energetic%20yet%20sophisticated%20atmosphere&width=600&height=400&seq=fitness1&orientation=landscape" alt="Fitness Tracking" class="w-full h-[300px] object-cover rounded-xl">
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all">
+          <h3 class="text-2xl font-bold mb-2">Fitness Journey</h3>
+          <p class="text-white/90">Track your workouts and see your progress with detailed analytics.</p>
+        </div>
+      </div>
+      <div class="relative group">
+        <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <img src="https://readdy.ai/api/search-image?query=A%20serene%20sleep%20environment%20with%20modern%2C%20minimalist%20design.%20Subtle%20sleep%20tracking%20elements%20integrated%20into%20a%20calm%2C%20contemporary%20bedroom%20setting.%20Soft%2C%20relaxing%20atmosphere%20with%20clean%20lines&width=600&height=400&seq=sleep1&orientation=landscape" alt="Sleep Tracking" class="w-full h-[300px] object-cover rounded-xl">
+        <div class="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all">
+          <h3 class="text-2xl font-bold mb-2">Sleep Analysis</h3>
+          <p class="text-white/90">Optimize your rest with advanced sleep tracking and insights.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Dashboard Cards -->
+<div class="card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-800">Today's Mood</h3>
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full">
+<i class="ri-emotion-happy-line text-primary"></i>
+</div>
+</div>
+<div class="flex justify-center my-4">
+<div class="text-5xl">😊</div>
+</div>
+<p class="text-gray-600 text-center">You're feeling great today!</p>
+<div class="mt-4">
+<a href="mood.html" class="text-primary font-medium flex items-center justify-center">
+Update Mood <i class="ri-arrow-right-line ml-1"></i>
+</a>
+</div>
+</div>
+<div class="card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-800">Water Intake</h3>
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full">
+<i class="ri-water-flash-line text-blue-500"></i>
+</div>
+</div>
+<div class="relative h-32 flex items-center justify-center">
+<svg width="100" height="100" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="10" />
+<circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="113" />
+</svg>
+<div class="absolute text-center">
+<div class="text-2xl font-bold text-gray-800">60%</div>
+<div class="text-sm text-gray-600">1.2/2L</div>
+</div>
+</div>
+<div class="mt-4">
+<a href="water.html" class="text-primary font-medium flex items-center justify-center">
+Add Water <i class="ri-arrow-right-line ml-1"></i>
+</a>
+</div>
+</div>
+<div class="card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-800">Sleep Quality</h3>
+<div class="w-10 h-10 flex items-center justify-center bg-indigo-100 rounded-full">
+<i class="ri-moon-line text-indigo-500"></i>
+</div>
+</div>
+<div class="h-32 flex items-center justify-center">
+<div id="sleep-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-4">
+<a href="fitandsleep.html" class="text-primary font-medium flex items-center justify-center">
+Sleep Details <i class="ri-arrow-right-line ml-1"></i>
+</a>
+</div>
+</div>
+<div class="card bg-white rounded-lg shadow-md p-6 border border-gray-100">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-gray-800">Today's Activity</h3>
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full">
+<i class="ri-heart-pulse-line text-green-500"></i>
+</div>
+</div>
+<div class="h-32 flex items-center justify-center">
+<div id="activity-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-4">
+<a href="fitandsleep.html" class="text-primary font-medium flex items-center justify-center">
+Activity Details <i class="ri-arrow-right-line ml-1"></i>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mood Tracker Section -->
+<section id="mood" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+<a href="mood.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Mood Tracker</h2>
+</a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Track your emotional wellbeing and identify patterns over time.</p>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">How are you feeling today?</h3>
+<div class="grid grid-cols-3 md:grid-cols-5 gap-4 mb-8">
+<button class="mood-btn flex flex-col items-center justify-center bg-white border-2 border-gray-200 hover:border-primary rounded-lg p-4 transition-all">
+<span class="text-4xl mb-2">😊</span>
+<span class="text-sm font-medium text-gray-700">Happy</span>
+</button>
+<button class="mood-btn flex flex-col items-center justify-center bg-white border-2 border-gray-200 hover:border-primary rounded-lg p-4 transition-all">
+<span class="text-4xl mb-2">😌</span>
+<span class="text-sm font-medium text-gray-700">Calm</span>
+</button>
+<button class="mood-btn flex flex-col items-center justify-center bg-white border-2 border-gray-200 hover:border-primary rounded-lg p-4 transition-all">
+<span class="text-4xl mb-2">😐</span>
+<span class="text-sm font-medium text-gray-700">Neutral</span>
+</button>
+<button class="mood-btn flex flex-col items-center justify-center bg-white border-2 border-gray-200 hover:border-primary rounded-lg p-4 transition-all">
+<span class="text-4xl mb-2">😔</span>
+<span class="text-sm font-medium text-gray-700">Sad</span>
+</button>
+<button class="mood-btn flex flex-col items-center justify-center bg-white border-2 border-gray-200 hover:border-primary rounded-lg p-4 transition-all">
+<span class="text-4xl mb-2">😠</span>
+<span class="text-sm font-medium text-gray-700">Angry</span>
+</button>
+</div>
+<div class="mb-6">
+<label for="mood-notes" class="block text-sm font-medium text-gray-700 mb-2">Add notes about your mood (optional)</label>
+<textarea id="mood-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="What's contributing to your mood today?"></textarea>
+</div>
+<button class="bg-primary text-white px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Save Mood
+</button>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-800 mb-2 md:mb-0">May 2025 Mood Calendar</h3>
+<div class="flex items-center space-x-2">
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-arrow-left-s-line text-gray-700"></i>
+</button>
+<span class="text-gray-700 font-medium">May 2025</span>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-arrow-right-s-line text-gray-700"></i>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<div class="text-center text-sm font-medium text-gray-500 py-2">Sun</div>
+<div class="text-center text-sm font-medium text-gray-500 py-2">Mon</div>
+<div class="text-center text-sm font-medium text-gray-500 py-2">Tue</div>
+<div class="text-center text-sm font-medium text-gray-500 py-2">Wed</div>
+<div class="text-center text-sm font-medium text-gray-500 py-2">Thu</div>
+<div class="text-center text-sm font-medium text-gray-500 py-2">Fri</div>
+<div class="text-center text-sm font-medium text-gray-500 py-2">Sat</div>
+<!-- Empty cells for days before May 1 -->
+<div class="text-center p-2"></div>
+<div class="text-center p-2"></div>
+<div class="text-center p-2"></div>
+<div class="text-center p-2"></div>
+<!-- Days with mood data -->
+<div class="text-center p-1">
+<div class="rounded-lg bg-green-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">1</span>
+<span class="text-xl">😊</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-green-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">2</span>
+<span class="text-xl">😊</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-blue-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">3</span>
+<span class="text-xl">😌</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-blue-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">4</span>
+<span class="text-xl">😌</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-yellow-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">5</span>
+<span class="text-xl">😐</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-yellow-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">6</span>
+<span class="text-xl">😐</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-green-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">7</span>
+<span class="text-xl">😊</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-green-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">8</span>
+<span class="text-xl">😊</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-blue-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">9</span>
+<span class="text-xl">😌</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-blue-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">10</span>
+<span class="text-xl">😌</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-yellow-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">11</span>
+<span class="text-xl">😐</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-red-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">12</span>
+<span class="text-xl">😠</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-orange-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">13</span>
+<span class="text-xl">😔</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-yellow-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">14</span>
+<span class="text-xl">😐</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-blue-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">15</span>
+<span class="text-xl">😌</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-green-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">16</span>
+<span class="text-xl">😊</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center border-2 border-primary">
+<span class="text-sm font-medium">17</span>
+<span class="text-xl">?</span>
+</div>
+</div>
+<!-- Remaining days in May -->
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">18</span>
+</div>
+</div>
+<!-- More days... -->
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">19</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">20</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">21</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">22</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">23</span>
+</div>
+</div>
+<div class="text-center p-1">
+<div class="rounded-lg bg-gray-100 p-2 h-full flex flex-col items-center justify-center">
+<span class="text-sm font-medium">24</span>
+</div>
+</div>
+<!-- Remaining days... -->
+</div>
+<div class="mt-6 flex flex-wrap gap-3">
+<div class="flex items-center">
+<div class="w-4 h-4 rounded-full bg-green-100 mr-2"></div>
+<span class="text-sm text-gray-700">Happy</span>
+</div>
+<div class="flex items-center">
+<div class="w-4 h-4 rounded-full bg-blue-100 mr-2"></div>
+<span class="text-sm text-gray-700">Calm</span>
+</div>
+<div class="flex items-center">
+<div class="w-4 h-4 rounded-full bg-yellow-100 mr-2"></div>
+<span class="text-sm text-gray-700">Neutral</span>
+</div>
+<div class="flex items-center">
+<div class="w-4 h-4 rounded-full bg-orange-100 mr-2"></div>
+<span class="text-sm text-gray-700">Sad</span>
+</div>
+<div class="flex items-center">
+<div class="w-4 h-4 rounded-full bg-red-100 mr-2"></div>
+<span class="text-sm text-gray-700">Angry</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Water Intake Tracker -->
+<section id="water" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="water.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Water Intake Tracker</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Stay hydrated throughout the day by tracking your water consumption.</p>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<div class="flex flex-col md:flex-row gap-8">
+<div class="w-full md:w-1/3">
+<div class="bg-blue-50 rounded-lg p-6 text-center">
+<h3 class="text-xl font-semibold text-gray-800 mb-4">Today's Progress</h3>
+<div class="relative mx-auto w-48 h-48 mb-4">
+<svg class="w-full h-full" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="10" />
+<circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="113" />
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-bold text-primary">60%</span>
+<span class="text-lg text-gray-600">1.2/2L</span>
+</div>
+</div>
+<p class="text-gray-600 mb-4">Your daily goal: 2 liters</p>
+<div class="flex items-center justify-between">
+<button class="bg-white text-primary border border-primary px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+Edit Goal
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+Reset
+</button>
+</div>
+</div>
+</div>
+<div class="w-full md:w-2/3">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Add Water</h3>
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mb-8">
+<button class="cup-btn water-wave flex flex-col items-center justify-center bg-white border-2 border-blue-200 hover:border-primary rounded-lg p-4 transition-all">
+<div class="w-12 h-12 flex items-center justify-center text-blue-500 mb-2">
+<i class="ri-cup-line text-2xl"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">100ml</span>
+</button>
+<button class="cup-btn water-wave flex flex-col items-center justify-center bg-white border-2 border-blue-200 hover:border-primary rounded-lg p-4 transition-all">
+<div class="w-12 h-12 flex items-center justify-center text-blue-500 mb-2">
+<i class="ri-cup-line text-3xl"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">200ml</span>
+</button>
+<button class="cup-btn water-wave flex flex-col items-center justify-center bg-white border-2 border-blue-200 hover:border-primary rounded-lg p-4 transition-all">
+<div class="w-12 h-12 flex items-center justify-center text-blue-500 mb-2">
+<i class="ri-goblet-line text-3xl"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">300ml</span>
+</button>
+<button class="cup-btn water-wave flex flex-col items-center justify-center bg-white border-2 border-blue-200 hover:border-primary rounded-lg p-4 transition-all">
+<div class="w-12 h-12 flex items-center justify-center text-blue-500 mb-2">
+<i class="ri-water-flash-line text-3xl"></i>
+</div>
+<span class="text-sm font-medium text-gray-700">500ml</span>
+</button>
+</div>
+<div class="mb-6">
+<h4 class="text-lg font-medium text-gray-800 mb-4">Custom Amount</h4>
+<div class="flex items-center">
+<input type="number" class="w-24 px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-center" placeholder="0" min="0" max="2000">
+<span class="bg-gray-100 px-4 py-2 border-y border-r border-gray-300 rounded-r text-gray-700">ml</span>
+<button class="ml-4 bg-primary text-white px-6 py-2 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Add
+</button>
+</div>
+</div>
+<div>
+<h4 class="text-lg font-medium text-gray-800 mb-4">Today's Log</h4>
+<div class="bg-gray-50 rounded-lg p-4 max-h-60 overflow-y-auto">
+<div class="flex items-center justify-between py-2 border-b border-gray-200">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-blue-500 mr-2">
+<i class="ri-cup-line"></i>
+</div>
+<span class="text-gray-700">200ml</span>
+</div>
+<div class="text-sm text-gray-500">9:15 AM</div>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-gray-200">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-blue-500 mr-2">
+<i class="ri-goblet-line"></i>
+</div>
+<span class="text-gray-700">300ml</span>
+</div>
+<div class="text-sm text-gray-500">11:30 AM</div>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-gray-200">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-blue-500 mr-2">
+<i class="ri-water-flash-line"></i>
+</div>
+<span class="text-gray-700">500ml</span>
+</div>
+<div class="text-sm text-gray-500">1:45 PM</div>
+</div>
+<div class="flex items-center justify-between py-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center text-blue-500 mr-2">
+<i class="ri-cup-line"></i>
+</div>
+<span class="text-gray-700">200ml</span>
+</div>
+<div class="text-sm text-gray-500">3:20 PM</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Weekly Water Intake</h3>
+<div class="h-64">
+<div id="water-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-6 text-center">
+<p class="text-gray-600">You've achieved your daily goal 5 out of 7 days this week!</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Breathing Exercise Section -->
+<section class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="breath.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Breathing Exercise</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Take a moment to relax and focus with guided breathing exercises.</p>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 max-w-3xl mx-auto">
+<div class="flex flex-col items-center justify-center">
+<div class="relative mb-8">
+<div class="breathing-circle w-64 h-64 bg-primary/10 rounded-full flex items-center justify-center">
+<div class="text-center">
+<p id="breathing-instruction" class="text-xl font-medium text-primary mb-2">Inhale</p>
+<p id="breathing-counter" class="text-3xl font-bold text-gray-800">4</p>
+</div>
+</div>
+</div>
+<div class="flex flex-wrap gap-4 mb-8">
+<button id="start-breathing" class="bg-primary text-white px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Start Exercise
+</button>
+<button id="pause-breathing" class="bg-white text-primary border border-primary px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap hidden">
+Pause
+</button>
+<button id="stop-breathing" class="bg-white text-gray-700 border border-gray-300 px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap hidden">
+Stop
+</button>
+</div>
+<div class="w-full max-w-md">
+<h3 class="text-lg font-medium text-gray-800 mb-4">Breathing Pattern</h3>
+<div class="flex items-center justify-between mb-4">
+<div>
+<label for="inhale-time" class="block text-sm font-medium text-gray-700 mb-1">Inhale (seconds)</label>
+<input type="range" id="inhale-time" min="2" max="8" value="4" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+<div class="flex justify-between text-xs text-gray-500 mt-1">
+<span>2</span>
+<span>8</span>
+</div>
+</div>
+<div class="text-center px-4">
+<span id="inhale-value" class="text-2xl font-bold text-primary">4</span>
+<span class="text-sm text-gray-500 block">seconds</span>
+</div>
+</div>
+<div class="flex items-center justify-between mb-4">
+<div>
+<label for="hold-time" class="block text-sm font-medium text-gray-700 mb-1">Hold (seconds)</label>
+<input type="range" id="hold-time" min="0" max="8" value="4" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+<div class="flex justify-between text-xs text-gray-500 mt-1">
+<span>0</span>
+<span>8</span>
+</div>
+</div>
+<div class="text-center px-4">
+<span id="hold-value" class="text-2xl font-bold text-primary">4</span>
+<span class="text-sm text-gray-500 block">seconds</span>
+</div>
+</div>
+<div class="flex items-center justify-between mb-4">
+<div>
+<label for="exhale-time" class="block text-sm font-medium text-gray-700 mb-1">Exhale (seconds)</label>
+<input type="range" id="exhale-time" min="2" max="8" value="6" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+<div class="flex justify-between text-xs text-gray-500 mt-1">
+<span>2</span>
+<span>8</span>
+</div>
+</div>
+<div class="text-center px-4">
+<span id="exhale-value" class="text-2xl font-bold text-primary">6</span>
+<span class="text-sm text-gray-500 block">seconds</span>
+</div>
+</div>
+<div class="mt-6">
+<h4 class="text-md font-medium text-gray-800 mb-2">Preset Patterns</h4>
+<div class="flex flex-wrap gap-2">
+<button class="bg-gray-100 text-gray-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Box Breathing (4-4-4-4)
+</button>
+<button class="bg-gray-100 text-gray-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+4-7-8 Technique
+</button>
+<button class="bg-gray-100 text-gray-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Relaxing Breath (5-2-5)
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Meal Log Section -->
+<section id="meal" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="water.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Meal Tracker</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Log your meals and track your nutritional intake throughout the day.</p>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<div class="flex flex-col md:flex-row gap-8">
+<div class="w-full md:w-1/3">
+<div class="bg-green-50 rounded-lg p-6 text-center">
+<h3 class="text-xl font-semibold text-gray-800 mb-4">Today's Summary</h3>
+<div class="relative mx-auto w-48 h-48 mb-4">
+<svg class="w-full h-full" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="10" />
+<circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="#10B981" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="85" />
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-bold text-secondary">70%</span>
+<span class="text-lg text-gray-600">1400/2000</span>
+<span class="text-sm text-gray-500">calories</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-2 mb-4">
+<div class="bg-white rounded p-2">
+<div class="text-lg font-bold text-primary">120g</div>
+<div class="text-xs text-gray-500">Protein</div>
+</div>
+<div class="bg-white rounded p-2">
+<div class="text-lg font-bold text-yellow-500">45g</div>
+<div class="text-xs text-gray-500">Fat</div>
+</div>
+<div class="bg-white rounded p-2">
+<div class="text-lg font-bold text-blue-500">180g</div>
+<div class="text-xs text-gray-500">Carbs</div>
+</div>
+</div>
+<button class="bg-white text-secondary border border-secondary px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap w-full">
+Set Nutrition Goals
+</button>
+</div>
+</div>
+<div class="w-full md:w-2/3">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-800">Add Meal</h3>
+<div class="flex items-center">
+<span class="text-gray-600 mr-2">May 17, 2025</span>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-calendar-line text-gray-700"></i>
+</button>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex flex-wrap gap-3 mb-4">
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Breakfast
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+Lunch
+</button>
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Dinner
+</button>
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Snack
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+<div>
+<label for="meal-name" class="block text-sm font-medium text-gray-700 mb-1">Meal Name</label>
+<input type="text" id="meal-name" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="e.g. Grilled Chicken Salad">
+</div>
+<div>
+<label for="meal-time" class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+<input type="time" id="meal-time" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="12:30">
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+<div>
+<label for="meal-calories" class="block text-sm font-medium text-gray-700 mb-1">Calories</label>
+<input type="number" id="meal-calories" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="0" min="0">
+</div>
+<div>
+<label for="meal-protein" class="block text-sm font-medium text-gray-700 mb-1">Protein (g)</label>
+<input type="number" id="meal-protein" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="0" min="0">
+</div>
+<div>
+<label for="meal-carbs" class="block text-sm font-medium text-gray-700 mb-1">Carbs (g)</label>
+<input type="number" id="meal-carbs" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="0" min="0">
+</div>
+</div>
+<div class="mb-4">
+<label for="meal-notes" class="block text-sm font-medium text-gray-700 mb-1">Notes (optional)</label>
+<textarea id="meal-notes" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Add any notes about this meal"></textarea>
+</div>
+<div class="flex justify-end">
+<button class="bg-primary text-white px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Add Meal
+</button>
+</div>
+</div>
+<div>
+<h3 class="text-xl font-semibold text-gray-800 mb-4">Today's Meals</h3>
+<div class="bg-gray-50 rounded-lg p-4 max-h-80 overflow-y-auto">
+<div class="bg-white rounded-lg p-4 mb-3 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-medium text-gray-800">Oatmeal with Berries</h4>
+<p class="text-sm text-gray-500">Breakfast • 7:30 AM</p>
+</div>
+<div class="text-lg font-bold text-gray-700">320 cal</div>
+</div>
+<div class="flex gap-3 text-sm">
+<span class="text-gray-600">Protein: 12g</span>
+<span class="text-gray-600">Carbs: 54g</span>
+<span class="text-gray-600">Fat: 6g</span>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 mb-3 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-medium text-gray-800">Greek Yogurt with Honey</h4>
+<p class="text-sm text-gray-500">Snack • 10:15 AM</p>
+</div>
+<div class="text-lg font-bold text-gray-700">180 cal</div>
+</div>
+<div class="flex gap-3 text-sm">
+<span class="text-gray-600">Protein: 15g</span>
+<span class="text-gray-600">Carbs: 20g</span>
+<span class="text-gray-600">Fat: 5g</span>
+</div>
+</div>
+<div class="bg-white rounded-lg p-4 shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-medium text-gray-800">Grilled Chicken Salad</h4>
+<p class="text-sm text-gray-500">Lunch • 12:30 PM</p>
+</div>
+<div class="text-lg font-bold text-gray-700">450 cal</div>
+</div>
+<div class="flex gap-3 text-sm">
+<span class="text-gray-600">Protein: 35g</span>
+<span class="text-gray-600">Carbs: 25g</span>
+<span class="text-gray-600">Fat: 22g</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Weekly Nutrition Overview</h3>
+<div class="h-64">
+<div id="nutrition-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Daily Calories</div>
+<div class="text-xl font-bold text-gray-800">1850</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Protein</div>
+<div class="text-xl font-bold text-primary">110g</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Carbs</div>
+<div class="text-xl font-bold text-blue-500">165g</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Fat</div>
+<div class="text-xl font-bold text-yellow-500">52g</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Sleep Tracker Section -->
+<section id="sleep" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="fitandsleep.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Sleep Tracker</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Monitor your sleep patterns and improve your rest quality.</p>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<div class="flex flex-col md:flex-row gap-8">
+<div class="w-full md:w-1/3">
+<div class="bg-indigo-50 rounded-lg p-6 text-center">
+<h3 class="text-xl font-semibold text-gray-800 mb-4">Last Night's Sleep</h3>
+<div class="flex items-center justify-center mb-4">
+<div class="text-5xl font-bold text-indigo-600">7.5</div>
+<div class="text-xl text-gray-600 ml-2">hours</div>
+</div>
+<div class="flex items-center justify-center mb-6">
+<div class="flex">
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-fill text-yellow-400"></i>
+<i class="ri-star-line text-gray-300"></i>
+</div>
+<span class="ml-2 text-gray-600">Good</span>
+</div>
+<div class="flex justify-between text-sm text-gray-600 mb-4">
+<div>10:30 PM</div>
+<div>6:00 AM</div>
+</div>
+<div class="h-3 bg-gray-200 rounded-full mb-6">
+<div class="h-3 bg-indigo-500 rounded-full" style="width: 80%"></div>
+</div>
+<button class="bg-white text-indigo-600 border border-indigo-600 px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap w-full">
+View Details
+</button>
+</div>
+</div>
+<div class="w-full md:w-2/3">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-800">Log Sleep</h3>
+<div class="flex items-center">
+<span class="text-gray-600 mr-2">May 16, 2025</span>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-calendar-line text-gray-700"></i>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2">Bedtime</label>
+<div class="flex">
+<input type="time" class="w-full px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="22:30">
+<div class="bg-gray-100 px-4 py-2 border-y border-r border-gray-300 rounded-r flex items-center">
+<i class="ri-moon-line text-gray-700"></i>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-sm font-medium text-gray-700 mb-2">Wake Time</label>
+<div class="flex">
+<input type="time" class="w-full px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="06:00">
+<div class="bg-gray-100 px-4 py-2 border-y border-r border-gray-300 rounded-r flex items-center">
+<i class="ri-sun-line text-gray-700"></i>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-2">Sleep Quality</label>
+<div class="flex items-center">
+<button class="text-2xl text-yellow-400 mr-1">
+<i class="ri-star-fill"></i>
+</button>
+<button class="text-2xl text-yellow-400 mr-1">
+<i class="ri-star-fill"></i>
+</button>
+<button class="text-2xl text-yellow-400 mr-1">
+<i class="ri-star-fill"></i>
+</button>
+<button class="text-2xl text-yellow-400 mr-1">
+<i class="ri-star-fill"></i>
+</button>
+<button class="text-2xl text-gray-300 mr-1">
+<i class="ri-star-line"></i>
+</button>
+<span class="ml-2 text-gray-600">Good</span>
+</div>
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-2">Factors Affecting Sleep</label>
+<div class="flex flex-wrap gap-2">
+<label class="flex items-center bg-gray-100 px-3 py-2 rounded-full cursor-pointer">
+<input type="checkbox" class="hidden">
+<div class="w-4 h-4 border border-gray-300 rounded-full mr-2 flex items-center justify-center bg-white">
+<div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+</div>
+<span class="text-sm">Stress</span>
+</label>
+<label class="flex items-center bg-gray-100 px-3 py-2 rounded-full cursor-pointer">
+<input type="checkbox" class="hidden">
+<div class="w-4 h-4 border border-gray-300 rounded-full mr-2 flex items-center justify-center bg-white">
+<div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+</div>
+<span class="text-sm">Caffeine</span>
+</label>
+<label class="flex items-center bg-gray-100 px-3 py-2 rounded-full cursor-pointer">
+<input type="checkbox" class="hidden">
+<div class="w-4 h-4 border border-gray-300 rounded-full mr-2 flex items-center justify-center bg-white">
+<div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+</div>
+<span class="text-sm">Screen Time</span>
+</label>
+<label class="flex items-center bg-gray-100 px-3 py-2 rounded-full cursor-pointer">
+<input type="checkbox" class="hidden">
+<div class="w-4 h-4 border border-gray-300 rounded-full mr-2 flex items-center justify-center bg-white">
+<div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+</div>
+<span class="text-sm">Exercise</span>
+</label>
+<label class="flex items-center bg-gray-100 px-3 py-2 rounded-full cursor-pointer">
+<input type="checkbox" class="hidden">
+<div class="w-4 h-4 border border-gray-300 rounded-full mr-2 flex items-center justify-center bg-white">
+<div class="w-2 h-2 rounded-full bg-primary hidden"></div>
+</div>
+<span class="text-sm">Alcohol</span>
+</label>
+</div>
+</div>
+<div class="mb-6">
+<label for="sleep-notes" class="block text-sm font-medium text-gray-700 mb-2">Notes (optional)</label>
+<textarea id="sleep-notes" rows="2" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Add any notes about your sleep"></textarea>
+</div>
+<div class="flex justify-end">
+<button class="bg-primary text-white px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Save Sleep Log
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Sleep Patterns</h3>
+<div class="h-64">
+<div id="sleep-pattern-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Sleep Time</div>
+<div class="text-xl font-bold text-gray-800">7.2 hrs</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Bedtime</div>
+<div class="text-xl font-bold text-indigo-600">10:45 PM</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Avg. Wake Time</div>
+<div class="text-xl font-bold text-orange-500">6:15 AM</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Sleep Quality</div>
+<div class="flex items-center justify-center">
+<div class="text-xl font-bold text-gray-800 mr-1">4.2</div>
+<i class="ri-star-fill text-yellow-400"></i>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Fitness Routine Section -->
+<section id="fitness" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="fitandsleep.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Fitness Routine</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Plan and track your workouts with customizable routines and timers.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-800">Today's Workout</h3>
+<div class="flex items-center">
+<button class="bg-primary text-white px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+Start Workout
+</button>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 mb-6">
+<div class="flex items-center justify-between mb-4">
+<h4 class="text-lg font-medium text-gray-800">Upper Body Strength</h4>
+<span class="text-sm text-gray-500">45 min • 8 exercises</span>
+</div>
+<div class="space-y-4">
+<div class="bg-white rounded p-4 flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full mr-3">
+<i class="ri-checkbox-blank-circle-line text-primary"></i>
+</div>
+<div>
+<h5 class="font-medium text-gray-800">Push-ups</h5>
+<p class="text-sm text-gray-500">3 sets • 12 reps</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-timer-line text-gray-700"></i>
+</button>
+</div>
+<div class="bg-white rounded p-4 flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full mr-3">
+<i class="ri-checkbox-blank-circle-line text-primary"></i>
+</div>
+<div>
+<h5 class="font-medium text-gray-800">Dumbbell Rows</h5>
+<p class="text-sm text-gray-500">3 sets • 10 reps each side</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-timer-line text-gray-700"></i>
+</button>
+</div>
+<div class="bg-white rounded p-4 flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full mr-3">
+<i class="ri-checkbox-blank-circle-line text-primary"></i>
+</div>
+<div>
+<h5 class="font-medium text-gray-800">Shoulder Press</h5>
+<p class="text-sm text-gray-500">3 sets • 8 reps</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-timer-line text-gray-700"></i>
+</button>
+</div>
+<div class="bg-white rounded p-4 flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full mr-3">
+<i class="ri-checkbox-blank-circle-line text-primary"></i>
+</div>
+<div>
+<h5 class="font-medium text-gray-800">Bicep Curls</h5>
+<p class="text-sm text-gray-500">3 sets • 12 reps</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-timer-line text-gray-700"></i>
+</button>
+</div>
+<div class="bg-white rounded p-4 flex items-center justify-between">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-primary/10 rounded-full mr-3">
+<i class="ri-checkbox-blank-circle-line text-primary"></i>
+</div>
+<div>
+<h5 class="font-medium text-gray-800">Tricep Dips</h5>
+<p class="text-sm text-gray-500">3 sets • 10 reps</p>
+</div>
+</div>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-timer-line text-gray-700"></i>
+</button>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-center mb-4">
+<h4 class="text-lg font-medium text-gray-800">Stretching Sequence</h4>
+<button class="text-primary font-medium">Start Sequence</button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+<div class="bg-gray-50 rounded-lg p-3 flex flex-col items-center text-center cursor-move">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full mb-2">
+<i class="ri-stretch-line text-blue-500"></i>
+</div>
+<h5 class="font-medium text-gray-800 text-sm">Shoulder Stretch</h5>
+<p class="text-xs text-gray-500">30 seconds</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex flex-col items-center text-center cursor-move">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full mb-2">
+<i class="ri-stretch-line text-blue-500"></i>
+</div>
+<h5 class="font-medium text-gray-800 text-sm">Tricep Stretch</h5>
+<p class="text-xs text-gray-500">30 seconds each</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex flex-col items-center text-center cursor-move">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full mb-2">
+<i class="ri-stretch-line text-blue-500"></i>
+</div>
+<h5 class="font-medium text-gray-800 text-sm">Wrist Stretch</h5>
+<p class="text-xs text-gray-500">20 seconds each</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex flex-col items-center text-center cursor-move">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full mb-2">
+<i class="ri-stretch-line text-blue-500"></i>
+</div>
+<h5 class="font-medium text-gray-800 text-sm">Chest Stretch</h5>
+<p class="text-xs text-gray-500">30 seconds</p>
+</div>
+<div class="bg-gray-50 rounded-lg p-3 flex flex-col items-center text-center cursor-move">
+<div class="w-12 h-12 flex items-center justify-center bg-blue-100 rounded-full mb-2">
+<i class="ri-stretch-line text-blue-500"></i>
+</div>
+<h5 class="font-medium text-gray-800 text-sm">Back Stretch</h5>
+<p class="text-xs text-gray-500">30 seconds</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Weekly Activity</h3>
+<div class="h-64">
+<div id="activity-weekly-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Workouts</div>
+<div class="text-xl font-bold text-gray-800">4 / 5</div>
+<div class="text-xs text-gray-500">This week</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Total Time</div>
+<div class="text-xl font-bold text-primary">3h 15m</div>
+<div class="text-xs text-gray-500">This week</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-3">
+<div class="text-sm text-gray-500">Calories Burned</div>
+<div class="text-xl font-bold text-orange-500">1,240</div>
+<div class="text-xs text-gray-500">This week</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">My Routines</h3>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-primary">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-800">Upper Body Strength</h4>
+<span class="text-xs text-white bg-primary px-2 py-1 rounded-full">Today</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">45 min • 8 exercises</p>
+<div class="flex justify-between items-center">
+<div class="flex space-x-1">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+</div>
+<span class="text-xs text-gray-500">Mon, Wed, Fri</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-blue-500">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-800">Lower Body Strength</h4>
+<span class="text-xs text-gray-500">Tomorrow</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">50 min • 7 exercises</p>
+<div class="flex justify-between items-center">
+<div class="flex space-x-1">
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+</div>
+<span class="text-xs text-gray-500">Tue, Thu</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-green-500">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-800">Cardio</h4>
+<span class="text-xs text-gray-500">Sunday</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">30 min • 5 exercises</p>
+<div class="flex justify-between items-center">
+<div class="flex space-x-1">
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+</div>
+<span class="text-xs text-gray-500">Sun</span>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-purple-500">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-800">Yoga Flow</h4>
+<span class="text-xs text-gray-500">Saturday</span>
+</div>
+<p class="text-sm text-gray-500 mb-2">40 min • Full body</p>
+<div class="flex justify-between items-center">
+<div class="flex space-x-1">
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+<span class="w-2 h-2 bg-purple-500 rounded-full"></span>
+</div>
+<span class="text-xs text-gray-500">Sat</span>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-white text-primary border border-primary px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+<i class="ri-add-line mr-1"></i> Create New Routine
+</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Exercise Timer</h3>
+<div class="flex flex-col items-center">
+<div class="relative w-48 h-48 mb-6">
+<svg class="w-full h-full" viewBox="0 0 100 100">
+<circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="10" />
+<circle class="progress-ring-circle" cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="0" />
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span id="timer-display" class="text-4xl font-bold text-gray-800">00:00</span>
+<span id="timer-label" class="text-sm text-gray-500">Ready</span>
+</div>
+</div>
+<div class="flex gap-3 mb-6">
+<button id="timer-start" class="bg-primary text-white px-5 py-2 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Start
+</button>
+<button id="timer-pause" class="bg-white text-primary border border-primary px-5 py-2 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap hidden">
+Pause
+</button>
+<button id="timer-reset" class="bg-white text-gray-700 border border-gray-300 px-5 py-2 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Reset
+</button>
+</div>
+<div class="w-full">
+<div class="flex justify-between items-center mb-2">
+<label for="timer-duration" class="text-sm font-medium text-gray-700">Duration</label>
+<span id="duration-value" class="text-sm font-medium text-primary">30s</span>
+</div>
+<input type="range" id="timer-duration" min="5" max="300" step="5" value="30" class="w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer">
+<div class="flex justify-between text-xs text-gray-500 mt-1">
+<span>5s</span>
+<span>5m</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mental Health Journal Section -->
+<section id="journal" class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="mood.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Mental Health Journal</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Track your mental wellbeing and identify patterns through regular journaling.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-xl font-semibold text-gray-800">New Journal Entry</h3>
+<div class="flex items-center">
+<span class="text-gray-600 mr-2">May 17, 2025</span>
+<button class="p-2 rounded-full hover:bg-gray-100 transition-colors">
+<i class="ri-calendar-line text-gray-700"></i>
+</button>
+</div>
+</div>
+<div class="mb-6">
+<label for="journal-title" class="block text-sm font-medium text-gray-700 mb-2">Title</label>
+<input type="text" id="journal-title" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Give your entry a title">
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-2">How are you feeling today?</label>
+<div class="flex flex-wrap gap-2">
+<button class="bg-green-100 text-green-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-green-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-happy-line mr-1"></i> Happy
+</button>
+<button class="bg-blue-100 text-blue-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-blue-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-normal-line mr-1"></i> Calm
+</button>
+<button class="bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-full text-sm font-medium hover:bg-opacity-20 transition-colors whitespace-nowrap">
+<i class="ri-mental-health-line mr-1"></i> Grateful
+</button>
+<button class="bg-gray-100 text-gray-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-normal-line mr-1"></i> Neutral
+</button>
+<button class="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-yellow-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-unhappy-line mr-1"></i> Anxious
+</button>
+<button class="bg-orange-100 text-orange-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-orange-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-sad-line mr-1"></i> Sad
+</button>
+<button class="bg-red-100 text-red-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-red-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-unhappy-line mr-1"></i> Stressed
+</button>
+<button class="bg-purple-100 text-purple-800 px-3 py-2 rounded-full text-sm font-medium hover:bg-purple-200 transition-colors whitespace-nowrap">
+<i class="ri-emotion-line mr-1"></i> Tired
+</button>
+<button class="bg-gray-100 text-gray-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+<i class="ri-add-line mr-1"></i> Add Custom
+</button>
+</div>
+</div>
+<div class="mb-6">
+<label for="journal-content" class="block text-sm font-medium text-gray-700 mb-2">Journal Entry</label>
+<textarea id="journal-content" rows="8" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Write your thoughts here..."></textarea>
+</div>
+<div class="mb-6">
+<label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+<div class="flex flex-wrap gap-2 mb-2">
+<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+work
+<button class="ml-1 text-gray-500 hover:text-gray-700">
+<i class="ri-close-line"></i>
+</button>
+</span>
+<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+meditation
+<button class="ml-1 text-gray-500 hover:text-gray-700">
+<i class="ri-close-line"></i>
+</button>
+</span>
+<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+self-care
+<button class="ml-1 text-gray-500 hover:text-gray-700">
+<i class="ri-close-line"></i>
+</button>
+</span>
+</div>
+<div class="flex">
+<input type="text" class="w-full px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Add a tag">
+<button class="bg-gray-100 px-4 py-2 border-y border-r border-gray-300 rounded-r text-gray-700 hover:bg-gray-200 transition-colors">
+Add
+</button>
+</div>
+</div>
+<div class="flex justify-end">
+<button class="bg-primary text-white px-6 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Save Entry
+</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Recent Entries</h3>
+<div class="space-y-4">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-gray-800">Finding Balance in Daily Routine</h4>
+<span class="text-sm text-gray-500">May 15, 2025</span>
+</div>
+<div class="flex gap-2 mb-3">
+<span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">Happy</span>
+<span class="bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-full text-xs font-medium">Grateful</span>
+</div>
+<p class="text-gray-600 text-sm mb-3 line-clamp-2">Today was a productive day. I managed to finish all my tasks at work and still had time for a quick workout. I'm feeling good about maintaining a healthy balance between work and personal life...</p>
+<div class="flex justify-between items-center">
+<div class="flex gap-1">
+<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">work</span>
+<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">balance</span>
+</div>
+<button class="text-primary text-sm font-medium">Read More</button>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-gray-800">Reflecting on Personal Growth</h4>
+<span class="text-sm text-gray-500">May 12, 2025</span>
+</div>
+<div class="flex gap-2 mb-3">
+<span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-medium">Calm</span>
+<span class="bg-primary bg-opacity-10 text-primary px-2 py-1 rounded-full text-xs font-medium">Grateful</span>
+</div>
+<p class="text-gray-600 text-sm mb-3 line-clamp-2">Looking back at where I was a year ago, I can see how much I've grown. The meditation practice has really helped me stay centered and manage stress better. I'm grateful for the progress...</p>
+<div class="flex justify-between items-center">
+<div class="flex gap-1">
+<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">meditation</span>
+<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">growth</span>
+</div>
+<button class="text-primary text-sm font-medium">Read More</button>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-medium text-gray-800">Dealing with Work Pressure</h4>
+<span class="text-sm text-gray-500">May 10, 2025</span>
+</div>
+<div class="flex gap-2 mb-3">
+<span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full text-xs font-medium">Anxious</span>
+<span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-medium">Stressed</span>
+</div>
+<p class="text-gray-600 text-sm mb-3 line-clamp-2">Today was challenging with tight deadlines at work. I felt overwhelmed at times, but managed to use some breathing techniques to calm down. Need to remember to take short breaks and not push myself too hard...</p>
+<div class="flex justify-between items-center">
+<div class="flex gap-1">
+<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">work</span>
+<span class="bg-gray-200 text-gray-700 px-2 py-0.5 rounded-full text-xs">stress</span>
+</div>
+<button class="text-primary text-sm font-medium">Read More</button>
+</div>
+</div>
+</div>
+<div class="mt-6 text-center">
+<button class="text-primary font-medium">View All Entries</button>
+</div>
+</div>
+</div>
+<div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Mood Insights</h3>
+<div class="h-64">
+<div id="mood-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-6">
+<h4 class="text-lg font-medium text-gray-800 mb-3">This Week's Mood</h4>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-green-100 rounded-full mr-2">
+<i class="ri-emotion-happy-line text-green-600"></i>
+</div>
+<span class="text-gray-700 font-medium">Happy</span>
+</div>
+<span class="text-gray-600">43%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-green-500 h-2 rounded-full" style="width: 43%"></div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 mt-2">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-2">
+<i class="ri-emotion-normal-line text-blue-600"></i>
+</div>
+<span class="text-gray-700 font-medium">Calm</span>
+</div>
+<span class="text-gray-600">28%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-blue-500 h-2 rounded-full" style="width: 28%"></div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 mt-2">
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center">
+<div class="w-8 h-8 flex items-center justify-center bg-yellow-100 rounded-full mr-2">
+<i class="ri-emotion-unhappy-line text-yellow-600"></i>
+</div>
+<span class="text-gray-700 font-medium">Anxious</span>
+</div>
+<span class="text-gray-600">15%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-yellow-500 h-2 rounded-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Journal Prompts</h3>
+<div class="space-y-4">
+<div class="bg-primary/5 rounded-lg p-4 border-l-4 border-primary">
+<h4 class="font-medium text-gray-800 mb-2">Gratitude Reflection</h4>
+<p class="text-gray-600 text-sm">What are three things you're grateful for today, and why do they matter to you?</p>
+<button class="mt-3 text-primary text-sm font-medium">Use This Prompt</button>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-gray-300">
+<h4 class="font-medium text-gray-800 mb-2">Stress Management</h4>
+<p class="text-gray-600 text-sm">What caused you stress today, and what strategies did you use to manage it?</p>
+<button class="mt-3 text-primary text-sm font-medium">Use This Prompt</button>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-gray-300">
+<h4 class="font-medium text-gray-800 mb-2">Self-Care Check-in</h4>
+<p class="text-gray-600 text-sm">How did you practice self-care today? What could you do better tomorrow?</p>
+<button class="mt-3 text-primary text-sm font-medium">Use This Prompt</button>
+</div>
+<div class="bg-gray-50 rounded-lg p-4 border-l-4 border-gray-300">
+<h4 class="font-medium text-gray-800 mb-2">Goal Reflection</h4>
+<p class="text-gray-600 text-sm">What progress did you make toward your goals today? What obstacles did you face?</p>
+<button class="mt-3 text-primary text-sm font-medium">Use This Prompt</button>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-white text-primary border border-primary px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+<i class="ri-refresh-line mr-1"></i> Get More Prompts
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Weight Tracking Section -->
+<section id="weight" class="py-16 bg-white">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="fitandsleep.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Weight Tracking</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Monitor your weight progress and set achievable goals.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2">
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Weight History</h3>
+<div class="h-80">
+<div id="weight-chart" class="w-full h-full"></div>
+</div>
+<div class="mt-6 flex flex-wrap gap-4 justify-center">
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Last 30 Days
+</button>
+<button class="bg-primary text-white px-4 py-2 rounded-full text-sm font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+Last 3 Months
+</button>
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Last 6 Months
+</button>
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+Last Year
+</button>
+<button class="bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+All Time
+</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Recent Entries</h3>
+<div class="overflow-x-auto">
+<table class="w-full">
+<thead>
+<tr class="border-b border-gray-200">
+<th class="py-3 text-left text-sm font-medium text-gray-500">Date</th>
+<th class="py-3 text-left text-sm font-medium text-gray-500">Weight</th>
+<th class="py-3 text-left text-sm font-medium text-gray-500">Change</th>
+<th class="py-3 text-left text-sm font-medium text-gray-500">Notes</th>
+<th class="py-3 text-left text-sm font-medium text-gray-500">Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-gray-200">
+<td class="py-3 text-sm text-gray-800">May 15, 2025</td>
+<td class="py-3 text-sm text-gray-800 font-medium">68.5 kg</td>
+<td class="py-3 text-sm text-green-600">-0.3 kg</td>
+<td class="py-3 text-sm text-gray-600">After morning workout</td>
+<td class="py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3 text-sm text-gray-800">May 12, 2025</td>
+<td class="py-3 text-sm text-gray-800 font-medium">68.8 kg</td>
+<td class="py-3 text-sm text-red-600">+0.2 kg</td>
+<td class="py-3 text-sm text-gray-600">After dinner</td>
+<td class="py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3 text-sm text-gray-800">May 10, 2025</td>
+<td class="py-3 text-sm text-gray-800 font-medium">68.6 kg</td>
+<td class="py-3 text-sm text-green-600">-0.4 kg</td>
+<td class="py-3 text-sm text-gray-600">Morning, fasted</td>
+<td class="py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3 text-sm text-gray-800">May 7, 2025</td>
+<td class="py-3 text-sm text-gray-800 font-medium">69.0 kg</td>
+<td class="py-3 text-sm text-red-600">+0.5 kg</td>
+<td class="py-3 text-sm text-gray-600">After weekend</td>
+<td class="py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+<tr>
+<td class="py-3 text-sm text-gray-800">May 5, 2025</td>
+<td class="py-3 text-sm text-gray-800 font-medium">68.5 kg</td>
+<td class="py-3 text-sm text-gray-600">--</td>
+<td class="py-3 text-sm text-gray-600">Morning, fasted</td>
+<td class="py-3 text-sm">
+<div class="flex space-x-2">
+<button class="text-gray-500 hover:text-primary">
+<i class="ri-edit-line"></i>
+</button>
+<button class="text-gray-500 hover:text-red-500">
+<i class="ri-delete-bin-line"></i>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Add Weight Entry</h3>
+<div class="mb-6">
+<label for="weight-date" class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+<input type="date" id="weight-date" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" value="2025-05-17">
+</div>
+<div class="mb-6">
+<label for="weight-value" class="block text-sm font-medium text-gray-700 mb-2">Weight</label>
+<div class="flex">
+<input type="number" id="weight-value" class="w-full px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="0.0" step="0.1" min="0">
+<div class="bg-gray-100 px-4 py-2 border-y border-r border-gray-300 rounded-r text-gray-700">kg</div>
+</div>
+</div>
+<div class="mb-6">
+<label for="weight-time" class="block text-sm font-medium text-gray-700 mb-2">Time of Day</label>
+<select id="weight-time" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent pr-8">
+<option value="morning">Morning (fasted)</option>
+<option value="afternoon">Afternoon</option>
+<option value="evening">Evening</option>
+<option value="night">Night</option>
+</select>
+</div>
+<div class="mb-6">
+<label for="weight-notes" class="block text-sm font-medium text-gray-700 mb-2">Notes (optional)</label>
+<textarea id="weight-notes" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Add any notes about this measurement"></textarea>
+</div>
+<button class="w-full bg-primary text-white px-4 py-3 rounded-button font-medium shadow-md hover:shadow-lg transition-all whitespace-nowrap">
+Save Weight Entry
+</button>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Weight Goals</h3>
+<div class="bg-gray-50 rounded-lg p-4 mb-6">
+<div class="flex justify-between items-center mb-2">
+<h4 class="font-medium text-gray-800">Current Goal</h4>
+<span class="text-sm text-gray-500">Started: Apr 10, 2025</span>
+</div>
+<div class="flex items-center justify-between mb-3">
+<div>
+<div class="text-sm text-gray-500">Target</div>
+<div class="text-xl font-bold text-primary">65.0 kg</div>
+</div>
+<div>
+<div class="text-sm text-gray-500">Current</div>
+<div class="text-xl font-bold text-gray-800">68.5 kg</div>
+</div>
+<div>
+<div class="text-sm text-gray-500">Remaining</div>
+<div class="text-xl font-bold text-orange-500">3.5 kg</div>
+</div>
+</div>
+<div class="mb-2">
+<div class="flex justify-between text-sm mb-1">
+<span class="text-gray-500">Progress</span>
+<span class="text-primary font-medium">50%</span>
+</div>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-primary h-2 rounded-full" style="width: 50%"></div>
+</div>
+</div>
+<div class="text-sm text-gray-600">
+At current rate, you'll reach your goal by <span class="font-medium text-primary">June 28, 2025</span>
+</div>
+</div>
+<div class="mb-6">
+<h4 class="font-medium text-gray-800 mb-3">Set New Goal</h4>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div>
+<label for="goal-weight" class="block text-sm font-medium text-gray-700 mb-1">Target Weight</label>
+<div class="flex">
+<input type="number" id="goal-weight" class="w-full px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="0.0" step="0.1" min="0">
+<div class="bg-gray-100 px-4 py-2 border-y border-r border-gray-300 rounded-r text-gray-700">kg</div>
+</div>
+</div>
+<div>
+<label for="goal-date" class="block text-sm font-medium text-gray-700 mb-1">Target Date</label>
+<input type="date" id="goal-date" class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+</div>
+</div>
+<button class="w-full bg-white text-primary border border-primary px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+Set New Goal
+</button>
+</div>
+<div>
+<h4 class="font-medium text-gray-800 mb-3">Weight Insights</h4>
+<div class="space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-600">Average (30 days)</span>
+<span class="text-sm font-medium text-gray-800">69.2 kg</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-600">Lowest (30 days)</span>
+<span class="text-sm font-medium text-green-600">68.2 kg</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-600">Highest (30 days)</span>
+<span class="text-sm font-medium text-orange-600">70.5 kg</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-sm text-gray-600">30-day trend</span>
+<span class="text-sm font-medium text-green-600">-1.2 kg</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Health Dashboard Section -->
+<section class="py-16 bg-gray-50">
+<div class="container mx-auto px-4">
+<div class="text-center mb-12">
+    <a href="mainpage.html">
+<h2 class="text-3xl font-bold text-gray-900 mb-4">Health Dashboard</h2>
+    </a>
+<p class="text-lg text-gray-600 max-w-3xl mx-auto">Get a comprehensive overview of all your health metrics in one place.</p>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8 mb-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-2 md:mb-0">Health Overview</h3>
+<div class="flex items-center">
+<div class="relative mr-4">
+<button class="flex items-center bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-medium hover:bg-gray-200 transition-colors whitespace-nowrap">
+<i class="ri-calendar-line mr-2"></i>
+Last 30 Days
+<i class="ri-arrow-down-s-line ml-2"></i>
+</button>
+</div>
+<button class="flex items-center bg-primary/10 text-primary px-4 py-2 rounded-full text-sm font-medium hover:bg-primary/20 transition-colors whitespace-nowrap">
+<i class="ri-refresh-line mr-2"></i>
+Sync Data
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+<i class="ri-heart-pulse-line text-blue-500"></i>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-500">Avg. Heart Rate</h4>
+<div class="text-xl font-bold text-gray-800">72 bpm</div>
+</div>
+</div>
+<div class="h-24">
+<div id="heart-rate-chart" class="w-full h-full"></div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full mr-3">
+<i class="ri-footprint-line text-green-500"></i>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-500">Daily Steps</h4>
+<div class="text-xl font-bold text-gray-800">8,432</div>
+</div>
+</div>
+<div class="h-24">
+<div id="steps-chart" class="w-full h-full"></div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 flex items-center justify-center bg-indigo-100 rounded-full mr-3">
+<i class="ri-zzz-line text-indigo-500"></i>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-500">Sleep Quality</h4>
+<div class="text-xl font-bold text-gray-800">7.2 hrs</div>
+</div>
+</div>
+<div class="h-24">
+<div id="sleep-quality-chart" class="w-full h-full"></div>
+</div>
+</div>
+<div class="bg-gray-50 rounded-lg p-4">
+<div class="flex items-center mb-4">
+<div class="w-10 h-10 flex items-center justify-center bg-orange-100 rounded-full mr-3">
+<i class="ri-fire-line text-orange-500"></i>
+</div>
+<div>
+<h4 class="text-sm font-medium text-gray-500">Calories Burned</h4>
+<div class="text-xl font-bold text-gray-800">2,345</div>
+</div>
+</div>
+<div class="h-24">
+<div id="calories-chart" class="w-full h-full"></div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2">
+<h3 class="text-lg font-semibold text-gray-800 mb-4">Health Metrics Comparison</h3>
+<div class="h-80">
+<div id="health-comparison-chart" class="w-full h-full"></div>
+</div>
+</div>
+<div>
+<h3 class="text-lg font-semibold text-gray-800 mb-4">Activity Distribution</h3>
+<div class="h-80">
+<div id="activity-distribution-chart" class="w-full h-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Connected Devices</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+<i class="ri-watch-line text-gray-700"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800">Fitness Watch Pro</h4>
+<p class="text-sm text-gray-500">Last synced: Today, 2:45 PM</p>
+</div>
+</div>
+<div class="flex items-center">
+<span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+<span class="text-sm text-gray-600">Connected</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+<i class="ri-scales-line text-gray-700"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800">Smart Scale</h4>
+<p class="text-sm text-gray-500">Last synced: Yesterday, 7:30 AM</p>
+</div>
+</div>
+<div class="flex items-center">
+<span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
+<span class="text-sm text-gray-600">Connected</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+<div class="flex items-center">
+<div class="w-10 h-10 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+<i class="ri-heart-pulse-line text-gray-700"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800">Blood Pressure Monitor</h4>
+<p class="text-sm text-gray-500">Last synced: May 10, 2025</p>
+</div>
+</div>
+<div class="flex items-center">
+<span class="inline-block w-2 h-2 bg-yellow-500 rounded-full mr-2"></span>
+<span class="text-sm text-gray-600">Needs Sync</span>
+</div>
+</div>
+</div>
+<div class="mt-6">
+<button class="w-full bg-white text-primary border border-primary px-4 py-2 rounded-button font-medium shadow-sm hover:shadow-md transition-all whitespace-nowrap">
+<i class="ri-add-line mr-1"></i> Connect New Device
+</button>
+</div>
+</div>
+<div class="bg-white rounded-lg shadow-md p-6 md:p-8">
+<h3 class="text-xl font-semibold text-gray-800 mb-6">Health Insights</h3>
+<div class="space-y-4">
+<div class="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-green-100 rounded-full mr-3 flex-shrink-0">
+<i class="ri-thumb-up-line text-green-600"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800 mb-1">Great Progress!</h4>
+<p class="text-sm text-gray-600">You've maintained consistent sleep patterns for the past week. Keep it up!</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-blue-100 rounded-full mr-3 flex-shrink-0">
+<i class="ri-information-line text-blue-600"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800 mb-1">Water Intake Reminder</h4>
+<p class="text-sm text-gray-600">You're 40% below your daily water goal. Try to drink more water throughout the day.</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-yellow-50 rounded-lg border-l-4 border-yellow-500">
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-yellow-100 rounded-full mr-3 flex-shrink-0">
+<i class="ri-alert-line text-yellow-600"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800 mb-1">Activity Suggestion</h4>
+<p class="text-sm text-gray-600">You've been less active than usual this week. Consider adding a short walk to your daily routine.</p>
+</div>
+</div>
+</div>
+<div class="p-4 bg-purple-50 rounded-lg border-l-4 border-purple-500">
+<div class="flex items-start">
+<div class="w-10 h-10 flex items-center justify-center bg-purple-100 rounded-full mr-3 flex-shrink-0">
+<i class="ri-mental-health-line text-purple-600"></i>
+</div>
+<div>
+<h4 class="font-medium text-gray-800 mb-1">Mood Pattern Detected</h4>
+<p class="text-sm text-gray-600">Your mood tends to improve after exercise sessions. Consider scheduling workouts when you feel low.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12">
+<div class="container mx-auto px-4">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+<div>
+<h3 class="text-2xl font-['Pacifico'] text-white mb-4">Health Track</h3>
+<p class="text-gray-400 mb-4">Your complete health companion for tracking, analyzing, and improving every aspect of your wellbeing.</p>
+<div class="flex space-x-4">
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-instagram-fill"></i>
+</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">
+<i class="ri-linkedin-fill"></i>
+</a>
+</div>
+</div>
+<div>
+<h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+<ul class="space-y-2">
+<li><a href="mainpage.html" class="text-gray-400 hover:text-white transition-colors">Dashboard</a></li>
+<li><a href="mood.html" class="text-gray-400 hover:text-white transition-colors">Mood Tracker</a></li>
+<li><a href="water.html" class="text-gray-400 hover:text-white transition-colors">Water Tracker</a></li>
+<li><a href="fitandsleep.html" class="text-gray-400 hover:text-white transition-colors">Fitness Routine</a></li>
+<li><a href="fitandsleep.html" class="text-gray-400 hover:text-white transition-colors">Sleep Tracker</a></li>
+<li><a href="mood.html" class="text-gray-400 hover:text-white transition-colors">Mental Health Journal</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-semibold mb-4">Resources</h4>
+<ul class="space-y-2">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Health Blog</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Nutrition Guide</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Workout Library</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Mental Wellness Tips</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Sleep Improvement</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-lg font-semibold mb-4">Contact Us</h4>
+<ul class="space-y-2">
+<li class="flex items-start">
+<i class="ri-map-pin-line mt-1 mr-2 text-gray-400"></i>
+<span class="text-gray-400">123 Health Street, Wellness City, WC 10001</span>
+</li>
+<li class="flex items-center">
+<i class="ri-mail-line mr-2 text-gray-400"></i>
+<a href="mailto:support@healthtracker.com" class="text-gray-400 hover:text-white transition-colors">support@healthtracker.com</a>
+</li>
+<li class="flex items-center">
+<i class="ri-phone-line mr-2 text-gray-400"></i>
+<a href="tel:+1234567890" class="text-gray-400 hover:text-white transition-colors">+1 (234) 567-890</a>
+</li>
+</ul>
+<div class="mt-4">
+<h5 class="text-sm font-medium text-gray-300 mb-2">Subscribe to our newsletter</h5>
+<div class="flex">
+<input type="email" class="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-l focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-white" placeholder="Your email">
+<button class="bg-primary text-white px-4 py-2 rounded-r font-medium">
+<i class="ri-send-plane-fill"></i>
+</button>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-8 border-t border-gray-800 text-center md:flex md:justify-between md:items-center">
+<p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Health Tracker. All rights reserved.</p>
+<div class="flex flex-wrap justify-center gap-4">
+<a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Privacy Policy</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Terms of Service</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Cookie Policy</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors text-sm">Accessibility</a>
+</div>
+</div>
+</div>
+</footer>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Mobile menu toggle
+const mobileMenuButton = document.getElementById('mobile-menu-button');
+const mobileMenu = document.getElementById('mobile-menu');
+mobileMenuButton.addEventListener('click', function() {
+mobileMenu.classList.toggle('hidden');
+});
+// Initialize charts
+// Sleep Chart
+const sleepChart = echarts.init(document.getElementById('sleep-chart'));
+const sleepOption = {
+animation: false,
+grid: { top: 5, right: 5, bottom: 5, left: 5 },
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+show: false
+},
+yAxis: {
+type: 'value',
+show: false
+},
+series: [{
+data: [7.2, 6.8, 7.5, 8.1, 7.0, 8.5, 7.5],
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: { color: 'rgba(87, 181, 231, 1)' },
+areaStyle: {
+color: {
+type: 'linear',
+x: 0, y: 0, x2: 0, y2: 1,
+colorStops: [
+{ offset: 0, color: 'rgba(87, 181, 231, 0.3)' },
+{ offset: 1, color: 'rgba(87, 181, 231, 0.1)' }
+]
+}
+}
+}]
+};
+sleepChart.setOption(sleepOption);
+// Activity Chart
+const activityChart = echarts.init(document.getElementById('activity-chart'));
+const activityOption = {
+animation: false,
+grid: { top: 5, right: 5, bottom: 5, left: 5 },
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+show: false
+},
+yAxis: {
+type: 'value',
+show: false
+},
+series: [{
+data: [30, 40, 35, 50, 45, 60, 45],
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+}]
+};
+activityChart.setOption(activityOption);
+// Water Chart
+const waterChart = echarts.init(document.getElementById('water-chart'));
+const waterOption = {
+animation: false,
+grid: { top: 20, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+name: 'Liters',
+nameTextStyle: { color: '#1f2937' },
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' },
+splitLine: { lineStyle: { color: '#eee' } }
+},
+series: [{
+data: [1.8, 1.5, 2.0, 1.7, 1.9, 1.2, 1.5],
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+markLine: {
+silent: true,
+lineStyle: { color: '#ff9800' },
+data: [{ yAxis: 2, name: 'Goal' }]
+}
+}]
+};
+waterChart.setOption(waterOption);
+// Nutrition Chart
+const nutritionChart = echarts.init(document.getElementById('nutrition-chart'));
+const nutritionOption = {
+animation: false,
+grid: { top: 20, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+legend: {
+data: ['Calories', 'Protein', 'Carbs', 'Fat'],
+textStyle: { color: '#1f2937' },
+right: 10,
+top: 0
+},
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' },
+splitLine: { lineStyle: { color: '#eee' } }
+},
+series: [
+{
+name: 'Calories',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [1800, 1950, 1750, 2100, 1850, 2200, 1900],
+lineStyle: { color: 'rgba(87, 181, 231, 1)' }
+},
+{
+name: 'Protein',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [100, 120, 95, 130, 110, 125, 105],
+lineStyle: { color: 'rgba(141, 211, 199, 1)' }
+},
+{
+name: 'Carbs',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [180, 200, 160, 220, 175, 230, 170],
+lineStyle: { color: 'rgba(251, 191, 114, 1)' }
+},
+{
+name: 'Fat',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [50, 55, 45, 60, 50, 65, 48],
+lineStyle: { color: 'rgba(252, 141, 98, 1)' }
+}
+]
+};
+nutritionChart.setOption(nutritionOption);
+// Sleep Pattern Chart
+const sleepPatternChart = echarts.init(document.getElementById('sleep-pattern-chart'));
+const sleepPatternOption = {
+animation: false,
+grid: { top: 20, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+xAxis: {
+type: 'category',
+data: ['5/10', '5/11', '5/12', '5/13', '5/14', '5/15', '5/16', '5/17'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+name: 'Hours',
+nameTextStyle: { color: '#1f2937' },
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' },
+splitLine: { lineStyle: { color: '#eee' } }
+},
+series: [
+{
+data: [6.8, 7.2, 8.0, 7.5, 6.5, 7.8, 7.5, 0],
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(87, 181, 231, 1)',
+borderRadius: [4, 4, 0, 0]
+},
+markLine: {
+silent: true,
+lineStyle: { color: '#ff9800' },
+data: [{ yAxis: 8, name: 'Ideal' }]
+}
+}
+]
+};
+sleepPatternChart.setOption(sleepPatternOption);
+// Activity Weekly Chart
+const activityWeeklyChart = echarts.init(document.getElementById('activity-weekly-chart'));
+const activityWeeklyOption = {
+animation: false,
+grid: { top: 20, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+name: 'Minutes',
+nameTextStyle: { color: '#1f2937' },
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' },
+splitLine: { lineStyle: { color: '#eee' } }
+},
+series: [
+{
+data: [45, 0, 60, 0, 50, 40, 0],
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+}
+]
+};
+activityWeeklyChart.setOption(activityWeeklyOption);
+// Mood Chart
+const moodChart = echarts.init(document.getElementById('mood-chart'));
+const moodOption = {
+animation: false,
+grid: { top: 20, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+xAxis: {
+type: 'category',
+data: ['5/10', '5/11', '5/12', '5/13', '5/14', '5/15', '5/16', '5/17'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+name: 'Mood',
+nameTextStyle: { color: '#1f2937' },
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: {
+color: '#1f2937',
+formatter: function(value) {
+if (value === 5) return 'Great';
+if (value === 4) return 'Good';
+if (value === 3) return 'Okay';
+if (value === 2) return 'Low';
+if (value === 1) return 'Bad';
+return '';
+}
+},
+splitLine: { lineStyle: { color: '#eee' } },
+min: 1,
+max: 5
+},
+series: [
+{
+data: [2, 3, 4, 4, 3, 5, 4, 4],
+type: 'line',
+smooth: true,
+symbol: 'circle',
+symbolSize: 8,
+lineStyle: { color: 'rgba(87, 181, 231, 1)' },
+itemStyle: { color: 'rgba(87, 181, 231, 1)' },
+areaStyle: {
+color: {
+type: 'linear',
+x: 0, y: 0, x2: 0, y2: 1,
+colorStops: [
+{ offset: 0, color: 'rgba(87, 181, 231, 0.3)' },
+{ offset: 1, color: 'rgba(87, 181, 231, 0.1)' }
+]
+}
+}
+}
+]
+};
+moodChart.setOption(moodOption);
+// Weight Chart
+const weightChart = echarts.init(document.getElementById('weight-chart'));
+const weightOption = {
+animation: false,
+grid: { top: 20, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+xAxis: {
+type: 'category',
+data: ['Feb', 'Mar', 'Apr', 'May'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+name: 'kg',
+nameTextStyle: { color: '#1f2937' },
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' },
+splitLine: { lineStyle: { color: '#eee' } },
+min: 65,
+max: 75
+},
+series: [
+{
+data: [72.5, 71.2, 70.0, 68.5],
+type: 'line',
+smooth: true,
+symbol: 'circle',
+symbolSize: 8,
+lineStyle: { color: 'rgba(87, 181, 231, 1)' },
+itemStyle: { color: 'rgba(87, 181, 231, 1)' },
+areaStyle: {
+color: {
+type: 'linear',
+x: 0, y: 0, x2: 0, y2: 1,
+colorStops: [
+{ offset: 0, color: 'rgba(87, 181, 231, 0.3)' },
+{ offset: 1, color: 'rgba(87, 181, 231, 0.1)' }
+]
+}
+},
+markLine: {
+silent: true,
+lineStyle: { color: '#ff9800' },
+data: [{ yAxis: 65, name: 'Goal' }]
+}
+}
+]
+};
+weightChart.setOption(weightOption);
+// Health Dashboard Charts
+// Heart Rate Chart
+const heartRateChart = echarts.init(document.getElementById('heart-rate-chart'));
+const heartRateOption = {
+animation: false,
+grid: { top: 5, right: 5, bottom: 5, left: 5 },
+xAxis: {
+type: 'category',
+data: ['', '', '', '', '', '', ''],
+show: false
+},
+yAxis: {
+type: 'value',
+show: false
+},
+series: [{
+data: [68, 72, 75, 70, 74, 68, 72],
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: { color: 'rgba(87, 181, 231, 1)' },
+areaStyle: {
+color: {
+type: 'linear',
+x: 0, y: 0, x2: 0, y2: 1,
+colorStops: [
+{ offset: 0, color: 'rgba(87, 181, 231, 0.3)' },
+{ offset: 1, color: 'rgba(87, 181, 231, 0.1)' }
+]
+}
+}
+}]
+};
+heartRateChart.setOption(heartRateOption);
+// Steps Chart
+const stepsChart = echarts.init(document.getElementById('steps-chart'));
+const stepsOption = {
+animation: false,
+grid: { top: 5, right: 5, bottom: 5, left: 5 },
+xAxis: {
+type: 'category',
+data: ['', '', '', '', '', '', ''],
+show: false
+},
+yAxis: {
+type: 'value',
+show: false
+},
+series: [{
+data: [6500, 8200, 7400, 9100, 8500, 10200, 8400],
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(141, 211, 199, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+}]
+};
+stepsChart.setOption(stepsOption);
+// Sleep Quality Chart
+const sleepQualityChart = echarts.init(document.getElementById('sleep-quality-chart'));
+const sleepQualityOption = {
+animation: false,
+grid: { top: 5, right: 5, bottom: 5, left: 5 },
+xAxis: {
+type: 'category',
+data: ['', '', '', '', '', '', ''],
+show: false
+},
+yAxis: {
+type: 'value',
+show: false
+},
+series: [{
+data: [7.2, 6.8, 7.5, 8.1, 7.0, 8.5, 7.5],
+type: 'line',
+smooth: true,
+symbol: 'none',
+lineStyle: { color: 'rgba(251, 191, 114, 1)' },
+areaStyle: {
+color: {
+type: 'linear',
+x: 0, y: 0, x2: 0, y2: 1,
+colorStops: [
+{ offset: 0, color: 'rgba(251, 191, 114, 0.3)' },
+{ offset: 1, color: 'rgba(251, 191, 114, 0.1)' }
+]
+}
+}
+}]
+};
+sleepQualityChart.setOption(sleepQualityOption);
+// Calories Chart
+const caloriesChart = echarts.init(document.getElementById('calories-chart'));
+const caloriesOption = {
+animation: false,
+grid: { top: 5, right: 5, bottom: 5, left: 5 },
+xAxis: {
+type: 'category',
+data: ['', '', '', '', '', '', ''],
+show: false
+},
+yAxis: {
+type: 'value',
+show: false
+},
+series: [{
+data: [2100, 2300, 2200, 2500, 2400, 2700, 2300],
+type: 'bar',
+barWidth: '60%',
+itemStyle: {
+color: 'rgba(252, 141, 98, 1)',
+borderRadius: [4, 4, 0, 0]
+}
+}]
+};
+caloriesChart.setOption(caloriesOption);
+// Health Comparison Chart
+const healthComparisonChart = echarts.init(document.getElementById('health-comparison-chart'));
+const healthComparisonOption = {
+animation: false,
+grid: { top: 30, right: 20, bottom: 30, left: 40 },
+tooltip: {
+trigger: 'axis',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+legend: {
+data: ['Steps', 'Sleep', 'Activity', 'Water'],
+textStyle: { color: '#1f2937' },
+right: 10,
+top: 0
+},
+xAxis: {
+type: 'category',
+data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' }
+},
+yAxis: {
+type: 'value',
+axisLine: { lineStyle: { color: '#ddd' } },
+axisLabel: { color: '#1f2937' },
+splitLine: { lineStyle: { color: '#eee' } }
+},
+series: [
+{
+name: 'Steps',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [65, 82, 74, 91, 85, 102, 84],
+lineStyle: { color: 'rgba(87, 181, 231, 1)' }
+},
+{
+name: 'Sleep',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [72, 68, 75, 81, 70, 85, 75],
+lineStyle: { color: 'rgba(141, 211, 199, 1)' }
+},
+{
+name: 'Activity',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [45, 0, 60, 0, 50, 40, 0],
+lineStyle: { color: 'rgba(251, 191, 114, 1)' }
+},
+{
+name: 'Water',
+type: 'line',
+smooth: true,
+symbol: 'none',
+data: [90, 75, 100, 85, 95, 60, 75],
+lineStyle: { color: 'rgba(252, 141, 98, 1)' }
+}
+]
+};
+healthComparisonChart.setOption(healthComparisonOption);
+// Activity Distribution Chart
+const activityDistributionChart = echarts.init(document.getElementById('activity-distribution-chart'));
+const activityDistributionOption = {
+animation: false,
+tooltip: {
+trigger: 'item',
+backgroundColor: 'rgba(255, 255, 255, 0.8)',
+borderColor: '#eee',
+borderWidth: 1,
+textStyle: { color: '#1f2937' }
+},
+legend: {
+orient: 'vertical',
+right: 10,
+top: 'center',
+textStyle: { color: '#1f2937' }
+},
+series: [
+{
+name: 'Activity Time',
+type: 'pie',
+radius: ['40%', '70%'],
+avoidLabelOverlap: false,
+itemStyle: {
+borderRadius: 8,
+borderColor: '#fff',
+borderWidth: 2
+},
+label: {
+show: false,
+position: 'center'
+},
+emphasis: {
+label: {
+show: true,
+fontSize: '18',
+fontWeight: 'bold'
+}
+},
+labelLine: {
+show: false
+},
+data: [
+{ value: 45, name: 'Cardio', itemStyle: { color: 'rgba(87, 181, 231, 1)' } },
+{ value: 30, name: 'Strength', itemStyle: { color: 'rgba(141, 211, 199, 1)' } },
+{ value: 15, name: 'Yoga', itemStyle: { color: 'rgba(251, 191, 114, 1)' } },
+{ value: 10, name: 'Other', itemStyle: { color: 'rgba(252, 141, 98, 1)' } }
+]
+}
+]
+};
+activityDistributionChart.setOption(activityDistributionOption);
+// Resize charts when window size changes
+window.addEventListener('resize', function() {
+sleepChart.resize();
+activityChart.resize();
+waterChart.resize();
+nutritionChart.resize();
+sleepPatternChart.resize();
+activityWeeklyChart.resize();
+moodChart.resize();
+weightChart.resize();
+heartRateChart.resize();
+stepsChart.resize();
+sleepQualityChart.resize();
+caloriesChart.resize();
+healthComparisonChart.resize();
+activityDistributionChart.resize();
+});
+// Custom checkbox functionality
+const checkboxLabels = document.querySelectorAll('label:has(input[type="checkbox"])');
+checkboxLabels.forEach(label => {
+label.addEventListener('click', function(e) {
+const checkbox = this.querySelector('input[type="checkbox"]');
+const indicator = this.querySelector('.w-2.h-2');
+if (checkbox.checked) {
+checkbox.checked = false;
+indicator.classList.add('hidden');
+} else {
+checkbox.checked = true;
+indicator.classList.remove('hidden');
+}
+e.preventDefault();
+});
+});
+// Breathing exercise functionality
+const startBreathingBtn = document.getElementById('start-breathing');
+const pauseBreathingBtn = document.getElementById('pause-breathing');
+const stopBreathingBtn = document.getElementById('stop-breathing');
+const breathingInstruction = document.getElementById('breathing-instruction');
+const breathingCounter = document.getElementById('breathing-counter');
+const breathingCircle = document.querySelector('.breathing-circle');
+let breathingInterval;
+let isPaused = false;
+let currentPhase = 'inhale';
+let counter = 4;
+const inhaleTimeInput = document.getElementById('inhale-time');
+const holdTimeInput = document.getElementById('hold-time');
+const exhaleTimeInput = document.getElementById('exhale-time');
+const inhaleValue = document.getElementById('inhale-value');
+const holdValue = document.getElementById('hold-value');
+const exhaleValue = document.getElementById('exhale-value');
+inhaleTimeInput.addEventListener('input', function() {
+inhaleValue.textContent = this.value;
+});
+holdTimeInput.addEventListener('input', function() {
+holdValue.textContent = this.value;
+});
+exhaleTimeInput.addEventListener('input', function() {
+exhaleValue.textContent = this.value;
+});
+startBreathingBtn.addEventListener('click', function() {
+if (isPaused) {
+isPaused = false;
+} else {
+startBreathingExercise();
+}
+this.classList.add('hidden');
+pauseBreathingBtn.classList.remove('hidden');
+stopBreathingBtn.classList.remove('hidden');
+});
+pauseBreathingBtn.addEventListener('click', function() {
+isPaused = true;
+this.classList.add('hidden');
+startBreathingBtn.classList.remove('hidden');
+});
+stopBreathingBtn.addEventListener('click', function() {
+clearInterval(breathingInterval);
+breathingInstruction.textContent = 'Inhale';
+breathingCounter.textContent = inhaleTimeInput.value;
+breathingCircle.style.animation = 'none';
+this.classList.add('hidden');
+pauseBreathingBtn.classList.add('hidden');
+startBreathingBtn.classList.remove('hidden');
+currentPhase = 'inhale';
+counter = parseInt(inhaleTimeInput.value);
+});
+function startBreathingExercise() {
+const inhaleTime = parseInt(inhaleTimeInput.value);
+const holdTime = parseInt(holdTimeInput.value);
+const exhaleTime = parseInt(exhaleTimeInput.value);
+if (currentPhase === 'inhale') {
+counter = inhaleTime;
+} else if (currentPhase === 'hold') {
+counter = holdTime;
+} else {
+counter = exhaleTime;
+}
+breathingCounter.textContent = counter;
+clearInterval(breathingInterval);
+breathingInterval = setInterval(() => {
+if (isPaused) return;
+counter--;
+if (counter <= 0) {
+if (currentPhase === 'inhale') {
+if (holdTime > 0) {
+currentPhase = 'hold';
+counter = holdTime;
+breathingInstruction.textContent = 'Hold';
+breathingCircle.style.animation = 'none';
+} else {
+currentPhase = 'exhale';
+counter = exhaleTime;
+breathingInstruction.textContent = 'Exhale';
+breathingCircle.style.animation = 'breathe 8s infinite ease-in-out reverse';
+}
+} else if (currentPhase === 'hold') {
+currentPhase = 'exhale';
+counter = exhaleTime;
+breathingInstruction.textContent = 'Exhale';
+breathingCircle.style.animation = 'breathe 8s infinite ease-in-out reverse';
+} else {
+currentPhase = 'inhale';
+counter = inhaleTime;
+breathingInstruction.textContent = 'Inhale';
+breathingCircle.style.animation = 'breathe 8s infinite ease-in-out';
+}
+}
+breathingCounter.textContent = counter;
+}, 1000);
+}
+// Exercise timer functionality
+const timerStartBtn = document.getElementById('timer-start');
+const timerPauseBtn = document.getElementById('timer-pause');
+const timerResetBtn = document.getElementById('timer-reset');
+const timerDisplay = document.getElementById('timer-display');
+const timerLabel = document.getElementById('timer-label');
+const timerDuration = document.getElementById('timer-duration');
+const durationValue = document.getElementById('duration-value');
+const timerCircle = document.querySelector('.progress-ring-circle');
+let timerInterval;
+let timerIsPaused = false;
+let timerSeconds = 30;
+let timerTotalSeconds = 30;
+timerDuration.addEventListener('input', function() {
+timerTotalSeconds = parseInt(this.value);
+timerSeconds = timerTotalSeconds;
+updateTimerDisplay();
+updateTimerProgress(1);
+const minutes = Math.floor(timerTotalSeconds / 60);
+const seconds = timerTotalSeconds % 60;
+durationValue.textContent = `${minutes > 0 ? minutes + 'm ' : ''}${seconds}s`;
+});
+timerStartBtn.addEventListener('click', function() {
+if (timerIsPaused) {
+timerIsPaused = false;
+timerLabel.textContent = 'Running';
+} else {
+startTimer();
+}
+this.classList.add('hidden');
+timerPauseBtn.classList.remove('hidden');
+});
+timerPauseBtn.addEventListener('click', function() {
+timerIsPaused = true;
+timerLabel.textContent = 'Paused';
+this.classList.add('hidden');
+timerStartBtn.classList.remove('hidden');
+});
+timerResetBtn.addEventListener('click', function() {
+clearInterval(timerInterval);
+timerSeconds = timerTotalSeconds;
+updateTimerDisplay();
+updateTimerProgress(1);
+timerLabel.textContent = 'Ready';
+timerPauseBtn.classList.add('hidden');
+timerStartBtn.classList.remove('hidden');
+});
+function startTimer() {
+timerLabel.textContent = 'Running';
+clearInterval(timerInterval);
+timerInterval = setInterval(() => {
+if (timerIsPaused) return;
+timerSeconds--;
+if (timerSeconds <= 0) {
+clearInterval(timerInterval);
+timerLabel.textContent = 'Completed!';
+timerPauseBtn.classList.add('hidden');
+timerStartBtn.classList.remove('hidden');
+}
+updateTimerDisplay();
+updateTimerProgress(timerSeconds / timerTotalSeconds);
+}, 1000);
+}
+function updateTimerDisplay() {
+const minutes = Math.floor(timerSeconds / 60);
+const seconds = timerSeconds % 60;
+timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+}
+function updateTimerProgress(ratio) {
+const circumference = 2 * Math.PI * 45;
+const offset = circumference * (1 - ratio);
+timerCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+timerCircle.style.strokeDashoffset = offset;
+}
+// Initialize timer display
+updateTimerDisplay();
+});
+</script>
+</body>
+</html>

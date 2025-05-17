@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hydration & Meal Tracker</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#4F9AE8',secondary:'#4CAF50'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fafafa;
+        }
+        .water-cup {
+            transition: all 0.3s ease;
+        }
+        .water-cup.filled {
+            color: #4F9AE8;
+            transform: scale(1.05);
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.3s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        .custom-checkbox {
+            position: relative;
+            cursor: pointer;
+        }
+        .custom-checkbox input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 20px;
+            width: 20px;
+            background-color: #fff;
+            border: 2px solid #e5e7eb;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        .custom-checkbox input:checked ~ .checkmark {
+            background-color: #4F9AE8;
+            border-color: #4F9AE8;
+        }
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+        .custom-checkbox input:checked ~ .checkmark:after {
+            display: block;
+        }
+        .custom-checkbox .checkmark:after {
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4F9AE8;
+        }
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        .meal-card {
+            transition: all 0.2s ease;
+        }
+        .meal-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen max-w-4xl mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-2xl font-['Pacifico'] text-primary"><a href="mainpage.html"> Health Track</a></h1>
+                <p class="text-gray-500">Friday, May 16, 2025</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <button class="bg-white border border-gray-200 p-2 rounded-full shadow-sm hover:shadow-md transition-all">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <i class="ri-notification-3-line ri-lg text-gray-600"></i>
+                    </div>
+                </button>
+                <div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-medium">
+                    <a href="login.html">
+                        <div class="w-10 h-10 flex items-center justify-center bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200 transition-colors">
+                        <i class="ri-user-line text-gray-700"></i>
+                        </div>
+                        </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Summary Dashboard -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Daily Summary</h2>
+                <div class="flex items-center gap-2 text-sm text-gray-500">
+                    <i class="ri-calendar-line"></i>
+                    <span>Today</span>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-6">
+                <!-- Hydration Summary -->
+                <div class="flex items-center gap-4">
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16" viewBox="0 0 36 36">
+                            <circle cx="18" cy="18" r="16" fill="none" stroke="#e6e6e6" stroke-width="2"></circle>
+                            <circle class="progress-ring-circle" cx="18" cy="18" r="16" fill="none" stroke="#4F9AE8" stroke-width="3" stroke-dasharray="100.53" stroke-dashoffset="50.265"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-drop-line ri-lg text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline gap-2">
+                            <h3 class="text-2xl font-semibold text-gray-800">50%</h3>
+                            <p class="text-gray-500">4/8 cups</p>
+                        </div>
+                        <p class="text-sm text-gray-500">Daily Hydration</p>
+                    </div>
+                </div>
+                
+                <!-- Calorie Summary -->
+                <div class="flex items-center gap-4">
+                    <div class="relative w-16 h-16">
+                        <svg class="w-16 h-16" viewBox="0 0 36 36">
+                            <circle cx="18" cy="18" r="16" fill="none" stroke="#e6e6e6" stroke-width="2"></circle>
+                            <circle class="progress-ring-circle" cx="18" cy="18" r="16" fill="none" stroke="#4CAF50" stroke-width="3" stroke-dasharray="100.53" stroke-dashoffset="30.159"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <div class="w-8 h-8 flex items-center justify-center">
+                                <i class="ri-restaurant-line ri-lg text-secondary"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex items-baseline gap-2">
+                            <h3 class="text-2xl font-semibold text-gray-800">70%</h3>
+                            <p class="text-gray-500">1,400/2,000</p>
+                        </div>
+                        <p class="text-sm text-gray-500">Daily Calories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hydration Tracking Section -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Daily Hydration</h2>
+                <button id="editHydrationGoal" class="text-primary text-sm font-medium flex items-center gap-1 hover:underline !rounded-button">
+                    <i class="ri-edit-line"></i>
+                    Edit Goal
+                </button>
+            </div>
+
+            <!-- Water Cups Grid -->
+            <div class="grid grid-cols-8 gap-3 mb-6" id="waterCupsGrid">
+                <div class="water-cup filled cursor-pointer flex flex-col items-center">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">1</span>
+                </div>
+                <div class="water-cup filled cursor-pointer flex flex-col items-center">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">2</span>
+                </div>
+                <div class="water-cup filled cursor-pointer flex flex-col items-center">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">3</span>
+                </div>
+                <div class="water-cup filled cursor-pointer flex flex-col items-center">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">4</span>
+                </div>
+                <div class="water-cup cursor-pointer flex flex-col items-center text-gray-400">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">5</span>
+                </div>
+                <div class="water-cup cursor-pointer flex flex-col items-center text-gray-400">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">6</span>
+                </div>
+                <div class="water-cup cursor-pointer flex flex-col items-center text-gray-400">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">7</span>
+                </div>
+                <div class="water-cup cursor-pointer flex flex-col items-center text-gray-400">
+                    <div class="w-10 h-10 flex items-center justify-center">
+                        <i class="ri-cup-line ri-lg"></i>
+                    </div>
+                    <span class="text-xs">8</span>
+                </div>
+            </div>
+
+            <!-- Quick Add Buttons -->
+            <div class="flex flex-wrap gap-3">
+                <button class="flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-button font-medium text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-cup-line"></i>
+                    </div>
+                    Cup (8 oz)
+                </button>
+                <button class="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-button font-medium text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-flask-line"></i>
+                    </div>
+                    Bottle (16 oz)
+                </button>
+                <button class="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-button font-medium text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-water-flash-line"></i>
+                    </div>
+                    Large (32 oz)
+                </button>
+                <button class="flex items-center gap-2 bg-gray-100 text-gray-700 px-4 py-2 rounded-button font-medium text-sm whitespace-nowrap">
+                    <div class="w-5 h-5 flex items-center justify-center">
+                        <i class="ri-add-line"></i>
+                    </div>
+                    Custom
+                </button>
+            </div>
+        </div>
+
+        <!-- Meal Tracking Section -->
+        <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-semibold text-gray-800">Today's Meals</h2>
+                <div class="flex items-center gap-2">
+                    <span class="text-gray-500 text-sm">1,400 / 2,000 cal</span>
+                    <button id="addMealBtn" class="bg-primary text-white w-8 h-8 rounded-full flex items-center justify-center shadow-sm hover:shadow-md transition-all !rounded-button">
+                        <i class="ri-add-line"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Calorie Progress Bar -->
+            <div class="w-full h-2 bg-gray-100 rounded-full mb-8">
+                <div class="h-2 bg-secondary rounded-full" style="width: 70%"></div>
+            </div>
+
+            <!-- Meal Categories -->
+            <div class="space-y-6">
+                <!-- Breakfast -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">Breakfast</h3>
+                    <div class="meal-card bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-medium">Greek Yogurt with Berries</h4>
+                            <div class="flex items-center gap-3 text-sm text-gray-500">
+                                <span>7:30 AM</span>
+                                <span>320 cal</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-edit-line"></i>
+                                </div>
+                            </button>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-delete-bin-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lunch -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">Lunch</h3>
+                    <div class="meal-card bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-medium">Grilled Chicken Salad</h4>
+                            <div class="flex items-center gap-3 text-sm text-gray-500">
+                                <span>12:15 PM</span>
+                                <span>450 cal</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-edit-line"></i>
+                                </div>
+                            </button>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-delete-bin-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Snacks -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">Snacks</h3>
+                    <div class="meal-card bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-medium">Apple with Almond Butter</h4>
+                            <div class="flex items-center gap-3 text-sm text-gray-500">
+                                <span>3:45 PM</span>
+                                <span>180 cal</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-edit-line"></i>
+                                </div>
+                            </button>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-delete-bin-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dinner -->
+                <div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-3">Dinner</h3>
+                    <div class="meal-card bg-gray-50 rounded-lg p-4 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-medium">Salmon with Roasted Vegetables</h4>
+                            <div class="flex items-center gap-3 text-sm text-gray-500">
+                                <span>7:00 PM</span>
+                                <span>450 cal</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button class="text-gray-400 hover:text-gray-600">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-edit-line"></i>
+                                </div>
+                            </button>
+                            <button class="text-gray-400 hover:text-red-500">
+                                <div class="w-8 h-8 flex items-center justify-center">
+                                    <i class="ri-delete-bin-line"></i>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Floating Action Button -->
+        <div class="fixed bottom-8 right-8">
+            <button class="bg-primary text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all !rounded-button">
+                <i class="ri-add-line ri-xl"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Edit Hydration Goal Modal -->
+    <div id="hydrationGoalModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Edit Hydration Goal</h3>
+                <button id="closeHydrationModal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <i class="ri-close-line ri-lg"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2">Daily Water Goal (cups)</label>
+                <div class="flex items-center">
+                    <button id="decreaseGoal" class="bg-gray-100 text-gray-700 w-10 h-10 rounded-l-button flex items-center justify-center border-none">
+                        <i class="ri-subtract-line"></i>
+                    </button>
+                    <input type="number" id="waterGoal" class="w-full h-10 text-center border-y border-gray-200 outline-none" value="8">
+                    <button id="increaseGoal" class="bg-gray-100 text-gray-700 w-10 h-10 rounded-r-button flex items-center justify-center border-none">
+                        <i class="ri-add-line"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2">Notification Settings</label>
+                <div class="flex items-center justify-between mb-3">
+                    <span class="text-gray-600">Hydration Reminders</span>
+                    <label class="custom-switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Reminder Frequency</span>
+                    <select class="bg-gray-100 border-none rounded-button px-3 py-2 pr-8 text-gray-700 appearance-none">
+                        <option>Every 2 hours</option>
+                        <option>Every 3 hours</option>
+                        <option>Every 4 hours</option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button id="cancelHydrationEdit" class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                <button id="saveHydrationGoal" class="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary/90 whitespace-nowrap">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Meal Modal -->
+    <div id="addMealModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-gray-800">Add Meal</h3>
+                <button id="closeAddMealModal" class="text-gray-400 hover:text-gray-600">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <i class="ri-close-line ri-lg"></i>
+                    </div>
+                </button>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2">Meal Type</label>
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="px-4 py-2 bg-primary text-white rounded-button whitespace-nowrap">Breakfast</button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button whitespace-nowrap">Lunch</button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button whitespace-nowrap">Dinner</button>
+                    <button class="px-4 py-2 bg-gray-100 text-gray-700 rounded-button whitespace-nowrap">Snack</button>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2">Meal Name</label>
+                <input type="text" class="w-full px-3 py-2 border border-gray-200 rounded-button" placeholder="Enter meal name">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-2">Calories</label>
+                <input type="number" class="w-full px-3 py-2 border border-gray-200 rounded-button" placeholder="Enter calories">
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 mb-2">Time</label>
+                <input type="time" class="w-full px-3 py-2 border border-gray-200 rounded-button" value="07:30">
+            </div>
+            <div class="flex justify-end gap-3">
+                <button id="cancelAddMeal" class="px-4 py-2 border border-gray-300 rounded-button text-gray-700 hover:bg-gray-50 whitespace-nowrap">Cancel</button>
+                <button id="saveMeal" class="px-4 py-2 bg-primary text-white rounded-button hover:bg-primary/90 whitespace-nowrap">Add Meal</button>
+            </div>
+        </div>
+    </div>
+   
+<footer class="bg-white border-t border-gray-200 mt-16">
+<div class="container mx-auto px-6 py-8">
+    <div class="flex flex-col md:flex-row justify-between">
+        <div class="mb-8 md:mb-0">
+            <h1 class="text-2xl font-['Pacifico'] text-gray-800 mb-4">Health Track</h1>
+            <p class="text-gray-600 max-w-md">Mindful Movement helps you build a consistent practice of breathing exercises and stretching for improved wellbeing.</p>
+            
+            <div class="mt-6 flex space-x-4">
+                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                    <i class="ri-facebook-fill"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                    <i class="ri-twitter-x-fill"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                    <i class="ri-instagram-fill"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                    <i class="ri-youtube-fill"></i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+            <div>
+                <h3 class="text-gray-800 font-semibold mb-4">Explore</h3>
+                <ul class="space-y-2">
+                    <li><a href="breath.html" class="text-gray-600 hover:text-primary transition">Exercises</a></li>
+                    <li><a href="mood.html" class="text-gray-600 hover:text-primary transition">Meditations</a></li>
+                    <li><a href="mainpage.html" class="text-gray-600 hover:text-primary transition">Programs</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Instructors</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-gray-800 font-semibold mb-4">Company</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">About Us</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Careers</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Blog</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div>
+                <h3 class="text-gray-800 font-semibold mb-4">Support</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Help Center</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Privacy Policy</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">Terms of Service</a></li>
+                    <li><a href="#" class="text-gray-600 hover:text-primary transition">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <p class="text-gray-600 text-sm">© 2025 Mindful Movement. All rights reserved.</p>
+        <div class="mt-4 md:mt-0 flex items-center space-x-4">
+            <div class="flex items-center">
+                <i class="ri-visa-fill text-2xl text-gray-700 mr-2"></i>
+                <i class="ri-mastercard-fill text-2xl text-gray-700 mr-2"></i>
+                <i class="ri-paypal-fill text-2xl text-gray-700"></i>
+            </div>
+        </div>
+    </div>
+</div>
+</footer>
+</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Water Cup Toggle
+            const waterCups = document.querySelectorAll('.water-cup');
+            waterCups.forEach((cup, index) => {
+                cup.addEventListener('click', () => {
+                    // If clicking an unfilled cup, fill it and all before it
+                    if (!cup.classList.contains('filled')) {
+                        for (let i = 0; i <= index; i++) {
+                            waterCups[i].classList.add('filled');
+                            waterCups[i].classList.remove('text-gray-400');
+                        }
+                    } 
+                    // If clicking a filled cup, unfill it and all after it
+                    else {
+                        for (let i = index; i < waterCups.length; i++) {
+                            waterCups[i].classList.remove('filled');
+                            waterCups[i].classList.add('text-gray-400');
+                        }
+                    }
+                    
+                    // Update the progress circle
+                    updateHydrationProgress();
+                });
+            });
+            
+            function updateHydrationProgress() {
+                const filledCups = document.querySelectorAll('.water-cup.filled').length;
+                const totalCups = waterCups.length;
+                const percentage = (filledCups / totalCups) * 100;
+                
+                // Update the circle progress
+                const circle = document.querySelector('.progress-ring-circle');
+                const radius = circle.r.baseVal.value;
+                const circumference = radius * 2 * Math.PI;
+                const offset = circumference - (percentage / 100) * circumference;
+                circle.style.strokeDasharray = `${circumference} ${circumference}`;
+                circle.style.strokeDashoffset = offset;
+                
+                // Update the percentage text
+                document.querySelector('.text-2xl.font-semibold').textContent = `${Math.round(percentage)}%`;
+                document.querySelector('.text-gray-500').textContent = `${filledCups}/${totalCups} cups`;
+            }
+            
+            // Hydration Goal Modal
+            const editHydrationGoalBtn = document.getElementById('editHydrationGoal');
+            const hydrationGoalModal = document.getElementById('hydrationGoalModal');
+            const closeHydrationModalBtn = document.getElementById('closeHydrationModal');
+            const cancelHydrationEditBtn = document.getElementById('cancelHydrationEdit');
+            const saveHydrationGoalBtn = document.getElementById('saveHydrationGoal');
+            const decreaseGoalBtn = document.getElementById('decreaseGoal');
+            const increaseGoalBtn = document.getElementById('increaseGoal');
+            const waterGoalInput = document.getElementById('waterGoal');
+            
+            editHydrationGoalBtn.addEventListener('click', () => {
+                hydrationGoalModal.classList.remove('hidden');
+            });
+            
+            closeHydrationModalBtn.addEventListener('click', () => {
+                hydrationGoalModal.classList.add('hidden');
+            });
+            
+            cancelHydrationEditBtn.addEventListener('click', () => {
+                hydrationGoalModal.classList.add('hidden');
+            });
+            
+            saveHydrationGoalBtn.addEventListener('click', () => {
+                const newGoal = parseInt(waterGoalInput.value);
+                if (newGoal > 0) {
+                    // Update the water cups grid
+                    const waterCupsGrid = document.getElementById('waterCupsGrid');
+                    waterCupsGrid.innerHTML = '';
+                    
+                    for (let i = 1; i <= newGoal; i++) {
+                        const filled = i <= 4; // Default to 4 cups filled
+                        const cupDiv = document.createElement('div');
+                        cupDiv.className = `water-cup ${filled ? 'filled' : 'text-gray-400'} cursor-pointer flex flex-col items-center`;
+                        cupDiv.innerHTML = `
+                            <div class="w-10 h-10 flex items-center justify-center">
+                                <i class="ri-cup-line ri-lg"></i>
+                            </div>
+                            <span class="text-xs">${i}</span>
+                        `;
+                        waterCupsGrid.appendChild(cupDiv);
+                    }
+                    
+                    // Reattach event listeners
+                    const newWaterCups = document.querySelectorAll('.water-cup');
+                    newWaterCups.forEach((cup, index) => {
+                        cup.addEventListener('click', () => {
+                            if (!cup.classList.contains('filled')) {
+                                for (let i = 0; i <= index; i++) {
+                                    newWaterCups[i].classList.add('filled');
+                                    newWaterCups[i].classList.remove('text-gray-400');
+                                }
+                            } else {
+                                for (let i = index; i < newWaterCups.length; i++) {
+                                    newWaterCups[i].classList.remove('filled');
+                                    newWaterCups[i].classList.add('text-gray-400');
+                                }
+                            }
+                            updateHydrationProgress();
+                        });
+                    });
+                    
+                    // Update progress
+                    updateHydrationProgress();
+                }
+                
+                hydrationGoalModal.classList.add('hidden');
+            });
+            
+            decreaseGoalBtn.addEventListener('click', () => {
+                const currentValue = parseInt(waterGoalInput.value);
+                if (currentValue > 1) {
+                    waterGoalInput.value = currentValue - 1;
+                }
+            });
+            
+            increaseGoalBtn.addEventListener('click', () => {
+                const currentValue = parseInt(waterGoalInput.value);
+                waterGoalInput.value = currentValue + 1;
+            });
+            
+            // Add Meal Modal
+            const addMealBtn = document.getElementById('addMealBtn');
+            const addMealModal = document.getElementById('addMealModal');
+            const closeAddMealModalBtn = document.getElementById('closeAddMealModal');
+            const cancelAddMealBtn = document.getElementById('cancelAddMeal');
+            const saveMealBtn = document.getElementById('saveMeal');
+            
+            addMealBtn.addEventListener('click', () => {
+                addMealModal.classList.remove('hidden');
+            });
+            
+            closeAddMealModalBtn.addEventListener('click', () => {
+                addMealModal.classList.add('hidden');
+            });
+            
+            cancelAddMealBtn.addEventListener('click', () => {
+                addMealModal.classList.add('hidden');
+            });
+            
+            saveMealBtn.addEventListener('click', () => {
+                // Here you would normally save the meal data
+                addMealModal.classList.add('hidden');
+            });
+            
+            // Meal type selection
+            const mealTypeButtons = document.querySelectorAll('.grid.grid-cols-2 button');
+            mealTypeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    mealTypeButtons.forEach(btn => {
+                        btn.classList.remove('bg-primary', 'text-white');
+                        btn.classList.add('bg-gray-100', 'text-gray-700');
+                    });
+                    button.classList.remove('bg-gray-100', 'text-gray-700');
+                    button.classList.add('bg-primary', 'text-white');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

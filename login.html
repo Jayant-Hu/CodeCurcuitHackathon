@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Track - Login</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2196F3',
+                        secondary: '#78909C'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://readdy.ai/api/search-image?query=Soft%20medical%20healthcare%20background%20with%20subtle%20medical%20symbols%20and%20health-related%20elements.%20Blurred%20effect%20with%20light%20blue%20and%20white%20color%20scheme.%20Clean%2C%20professional%2C%20and%20non-distracting%20appearance.%20Perfect%20for%20a%20healthcare%20application%20login%20page%20background.&width=1920&height=1080&seq=123456&orientation=landscape');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #2196F3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+        }
+        
+        .toggle-password {
+            cursor: pointer;
+        }
+        
+        .custom-checkbox {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #E0E0E0;
+            border-radius: 4px;
+            margin-right: 8px;
+            position: relative;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        
+        .custom-checkbox:checked {
+            background-color: #2196F3;
+            border-color: #2196F3;
+        }
+        
+        .custom-checkbox:checked::after {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-800">
+    <div class="absolute inset-0 bg-white bg-opacity-50"></div>
+    
+    <div class="relative z-10 w-full max-w-md px-6">
+        <div class="text-center mb-8">
+            <h1 class="font-['Pacifico'] text-4xl text-primary mb-2"><a href="mainpage.html"> Health Track</a></h1>
+            <p class="text-gray-600 text-lg">Track Your Health Journey</p>
+        </div>
+        
+        <div class="bg-white bg-opacity-95 rounded-lg shadow-xl p-8">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800">Sign In</h2>
+            
+            <form>
+                <div class="mb-5">
+                    <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none w-10 h-10">
+                            <i class="ri-mail-line text-gray-400"></i>
+                        </div>
+                        <input type="email" id="email" class="form-input w-full pl-10 py-3 border border-gray-300 rounded !rounded-button" placeholder="Enter your email">
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none w-10 h-10">
+                            <i class="ri-lock-line text-gray-400"></i>
+                        </div>
+                        <input type="password" id="password" class="form-input w-full pl-10 pr-10 py-3 border border-gray-300 rounded !rounded-button" placeholder="Enter your password">
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 toggle-password w-10 h-10">
+                            <i class="ri-eye-line text-gray-400"></i>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center justify-between mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="custom-checkbox">
+                        <label for="remember" class="text-sm text-gray-600 cursor-pointer">Remember me</label>
+                    </div>
+                    <a href="#" class="text-sm text-primary hover:text-primary/80 whitespace-nowrap">Forgot password?</a>
+                </div>
+                
+                <button type="submit" class="w-full bg-primary text-white py-3 rounded !rounded-button font-medium hover:bg-primary/90 transition duration-200 whitespace-nowrap">Sign In</button>
+            </form>
+            
+            <div class="mt-6 pt-6 border-t border-gray-200 text-center">
+                <p class="text-gray-600">
+                    Don't have an account? 
+                    <a href="#" class="text-primary hover:text-primary/80 font-medium">Sign Up</a>
+                </p>
+            </div>
+            
+            <div class="mt-8 flex items-center justify-center space-x-4">
+                <button class="flex items-center justify-center p-2 border border-gray-300 rounded !rounded-button hover:bg-gray-50 transition w-12 h-12">
+                    <i class="ri-google-fill text-xl text-red-500"></i>
+                </button>
+                <button class="flex items-center justify-center p-2 border border-gray-300 rounded !rounded-button hover:bg-gray-50 transition w-12 h-12">
+                    <i class="ri-apple-fill text-xl"></i>
+                </button>
+                <button class="flex items-center justify-center p-2 border border-gray-300 rounded !rounded-button hover:bg-gray-50 transition w-12 h-12">
+                    <i class="ri-facebook-fill text-xl text-blue-600"></i>
+                </button>
+            </div>
+        </div>
+        
+        <div class="mt-8 text-center text-sm text-gray-500">
+            <p>© 2025 Health Track. All rights reserved.</p>
+            <div class="mt-1">
+                <a href="#" class="text-gray-500 hover:text-primary">Privacy Policy</a>
+                <span class="mx-2">•</span>
+                <a href="#" class="text-gray-500 hover:text-primary">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const togglePassword = document.querySelector('.toggle-password');
+            const passwordInput = document.getElementById('password');
+            
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                // Toggle icon
+                const icon = togglePassword.querySelector('i');
+                if (type === 'password') {
+                    icon.classList.remove('ri-eye-off-line');
+                    icon.classList.add('ri-eye-line');
+                } else {
+                    icon.classList.remove('ri-eye-line');
+                    icon.classList.add('ri-eye-off-line');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

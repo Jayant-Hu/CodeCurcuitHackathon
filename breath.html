@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindful Movement</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#57b5e7',secondary:'#8dd3c7'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        .breathing-circle {
+            transition: transform 4s ease-in-out, background-color 4s ease-in-out;
+            box-shadow: 0 0 40px rgba(87, 181, 231, 0.3);
+        }
+        .breathing-circle.inhale {
+            transform: scale(1.5);
+            background-color: rgba(87, 181, 231, 0.8);
+        }
+        .breathing-circle.exhale {
+            transform: scale(1);
+            background-color: rgba(141, 211, 199, 0.8);
+        }
+        .phase-text {
+            transition: opacity 0.5s ease-in-out;
+        }
+        .stretch-card {
+            cursor: grab;
+        }
+        .stretch-card:active {
+            cursor: grabbing;
+        }
+        .stretch-card.dragging {
+            opacity: 0.8;
+            transform: scale(1.05);
+            z-index: 10;
+        }
+        .countdown-timer {
+            transition: stroke-dashoffset 1s linear;
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e7eb;
+            outline: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #57b5e7;
+            cursor: pointer;
+        }
+        .custom-checkbox {
+            position: relative;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid #d1d5db;
+            background-color: white;
+        }
+        .custom-checkbox.checked {
+            background-color: #57b5e7;
+            border-color: #57b5e7;
+        }
+        .custom-checkbox.checked::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 6px;
+            height: 10px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 48px;
+            height: 24px;
+        }
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e7eb;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .switch-slider {
+            background-color: #57b5e7;
+        }
+        input:checked + .switch-slider:before {
+            transform: translateX(24px);
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm py-4">
+            <div class="container mx-auto px-6 flex justify-between items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-['Pacifico'] text-primary"><a href="mainpage.html"> Health Track</a></h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="text-primary font-medium">Exercises</a>
+                    <a href="mood.html" class="text-gray-600 hover:text-primary transition">Meditations</a>
+                    <a href="mainpage.html" class="text-gray-600 hover:text-primary transition">Programs</a>
+                    <a href="#" class="text-gray-600 hover:text-primary transition">Community</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center bg-gray-100 rounded-full px-3 py-1">
+                        <div class="w-8 h-8 flex items-center justify-center bg-primary rounded-full text-white">
+                            <span class="text-sm font-medium">7</span>
+                        </div>
+                        <span class="ml-2 text-sm font-medium text-gray-700">Day Streak</span>
+                    </div>
+                    <a href="login.html">
+                    <div class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-200">
+                        <i class="ri-user-line text-gray-700"></i>
+                    </div>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow container mx-auto px-6 py-8">
+            <div class="max-w-5xl mx-auto">
+                <!-- Page Title -->
+                <div class="mb-8 text-center">
+                    <h1 class="text-3xl md:text-4xl font-semibold text-gray-800">Mindful Movement</h1>
+                    <p class="mt-2 text-gray-600">Breathe, stretch, and find your center</p>
+                </div>
+
+                <!-- Breathing Exercise Module -->
+                <section class="mb-16">
+                    <div class="bg-white rounded-xl shadow-md p-8 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 left-0 h-1.5 bg-gray-100">
+                            <div class="h-full bg-primary rounded-full" style="width: 35%;"></div>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row items-center gap-8">
+                            <div class="w-full md:w-1/2 flex flex-col items-center">
+                                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Breathing Exercise</h2>
+                                <p class="text-gray-600 mb-6 text-center">Follow the animation to synchronize your breath</p>
+                                
+                                <div class="relative flex items-center justify-center mb-6">
+                                    <div class="breathing-circle w-56 h-56 rounded-full flex items-center justify-center bg-secondary">
+                                        <div class="phase-text text-white text-2xl font-medium">Inhale</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center gap-4 mb-6">
+                                    <button id="startBreathingBtn" class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+                                        <i class="ri-play-line"></i>
+                                        <span>Start</span>
+                                    </button>
+                                    <div class="text-2xl font-medium text-gray-800" id="breathingTimer">0:00</div>
+                                </div>
+                                
+                                <div class="w-full max-w-xs">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm text-gray-600">Breathing Pace</span>
+                                        <span class="text-sm font-medium text-gray-800" id="breathingPaceValue">4s</span>
+                                    </div>
+                                    <input type="range" min="2" max="8" value="4" class="w-full" id="breathingPaceSlider">
+                                </div>
+                            </div>
+                            
+                            <div class="w-full md:w-1/2">
+                                <div class="rounded-xl overflow-hidden h-80">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20serene%20landscape%20with%20soft%20blue%20sky%20and%20gentle%20clouds%2C%20showing%20a%20peaceful%20natural%20setting%20with%20mountains%20in%20the%20background%20and%20a%20calm%20lake%20reflecting%20the%20sky.%20The%20scene%20has%20a%20soothing%20atmosphere%20with%20soft%20lighting%20and%20muted%20colors%2C%20perfect%20for%20a%20meditation%20background.&width=600&height=400&seq=1&orientation=landscape" alt="Calming nature scene" class="w-full h-full object-cover object-top">
+                                </div>
+                                
+                                <div class="mt-6 bg-gray-50 rounded-lg p-4">
+                                    <h3 class="font-medium text-gray-800 mb-2">Benefits of Deep Breathing</h3>
+                                    <ul class="text-gray-600 space-y-2">
+                                        <li class="flex items-start">
+                                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-0.5">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="ml-2">Reduces stress and anxiety</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-0.5">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="ml-2">Lowers blood pressure and heart rate</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-0.5">
+                                                <i class="ri-check-line"></i>
+                                            </div>
+                                            <span class="ml-2">Improves focus and mental clarity</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stretching Sequence Section -->
+                <section>
+                    <div class="bg-white rounded-xl shadow-md p-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-2">Stretching Sequence</h2>
+                        <p class="text-gray-600 mb-6">Drag and drop to reorder your stretches</p>
+
+                        <!-- Active Stretch Display -->
+                        <div id="activeStretchDisplay" class="mb-8 bg-gray-50 rounded-xl p-6 flex flex-col md:flex-row items-center gap-8">
+                            <div class="w-full md:w-1/2 flex flex-col items-center">
+                                <div class="relative">
+                                    <svg class="w-48 h-48">
+                                        <circle cx="96" cy="96" r="88" fill="none" stroke="#e5e7eb" stroke-width="16"></circle>
+                                        <circle cx="96" cy="96" r="88" fill="none" stroke="#57b5e7" stroke-width="16" stroke-dasharray="553" stroke-dashoffset="138" class="countdown-timer" transform="rotate(-90 96 96)"></circle>
+                                    </svg>
+                                    <div class="absolute inset-0 flex items-center justify-center">
+                                        <span class="text-3xl font-semibold text-gray-800">0:30</span>
+                                    </div>
+                                </div>
+                                <div class="mt-4 flex gap-4">
+                                    <button class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 transition whitespace-nowrap">
+                                        <i class="ri-skip-back-line text-gray-700"></i>
+                                    </button>
+                                    <button class="flex items-center justify-center w-12 h-12 rounded-full bg-primary text-white hover:bg-opacity-90 transition whitespace-nowrap">
+                                        <i class="ri-pause-line ri-lg"></i>
+                                    </button>
+                                    <button class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 hover:bg-gray-300 transition whitespace-nowrap">
+                                        <i class="ri-skip-forward-line text-gray-700"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="w-full md:w-1/2">
+                                <h3 class="text-xl font-medium text-gray-800 mb-2">Seated Forward Bend</h3>
+                                <p class="text-gray-600 mb-4">Sit with your legs extended. Inhale and lengthen your spine, then exhale and hinge at your hips to fold forward. Reach for your feet or ankles.</p>
+                                
+                                <div class="rounded-lg overflow-hidden h-48 mb-4">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20seated%20forward%20bend%20yoga%20pose%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20sitting%20on%20a%20yoga%20mat%20with%20legs%20extended%20forward%2C%20bending%20from%20the%20hips%20with%20a%20straight%20back%20reaching%20toward%20their%20feet.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20stretching%20exercise.&width=600&height=300&seq=2&orientation=landscape" alt="Seated Forward Bend" class="w-full h-full object-cover object-top">
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <label class="custom-switch mr-2">
+                                            <input type="checkbox" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                        <span class="text-sm text-gray-700">Voice Guidance</span>
+                                    </div>
+                                    
+                                    <div class="flex gap-2">
+                                        <button class="flex items-center gap-1 text-gray-600 hover:text-primary transition whitespace-nowrap">
+                                            <i class="ri-information-line"></i>
+                                            <span class="text-sm">Details</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stretch Cards -->
+                        <h3 class="text-lg font-medium text-gray-800 mb-3">Your Sequence</h3>
+                        <div id="stretchContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="stretch-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                <div class="h-36 overflow-hidden">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20seated%20forward%20bend%20yoga%20pose%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20sitting%20on%20a%20yoga%20mat%20with%20legs%20extended%20forward%2C%20bending%20from%20the%20hips%20with%20a%20straight%20back%20reaching%20toward%20their%20feet.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20stretching%20exercise.&width=300&height=200&seq=3&orientation=landscape" alt="Seated Forward Bend" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-medium text-gray-800">Seated Forward Bend</h4>
+                                        <div class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-grab">
+                                            <i class="ri-drag-move-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">30 seconds</span>
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stretch-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                <div class="h-36 overflow-hidden">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20cobra%20pose%20yoga%20position%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20lying%20face%20down%20on%20a%20yoga%20mat%20with%20hands%20under%20shoulders%2C%20arms%20straightened%2C%20lifting%20chest%20off%20the%20floor%20while%20keeping%20hips%20down.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20back-stretching%20exercise.&width=300&height=200&seq=4&orientation=landscape" alt="Cobra Pose" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-medium text-gray-800">Cobra Pose</h4>
+                                        <div class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-grab">
+                                            <i class="ri-drag-move-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">45 seconds</span>
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stretch-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                <div class="h-36 overflow-hidden">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20childs%20pose%20yoga%20position%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20kneeling%20on%20a%20yoga%20mat%20with%20arms%20extended%20forward%2C%20torso%20lowered%20between%20the%20thighs%2C%20and%20forehead%20resting%20on%20the%20mat.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20relaxing%20stretching%20exercise.&width=300&height=200&seq=5&orientation=landscape" alt="Child's Pose" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-medium text-gray-800">Child's Pose</h4>
+                                        <div class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-grab">
+                                            <i class="ri-drag-move-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">60 seconds</span>
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stretch-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                <div class="h-36 overflow-hidden">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20downward-facing%20dog%20yoga%20pose%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20in%20an%20inverted%20V%20position%20on%20a%20yoga%20mat%20with%20hands%20and%20feet%20on%20the%20floor%2C%20hips%20raised%20high%2C%20forming%20a%20triangle%20with%20the%20floor.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20full-body%20stretching%20exercise.&width=300&height=200&seq=6&orientation=landscape" alt="Downward-Facing Dog" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-medium text-gray-800">Downward-Facing Dog</h4>
+                                        <div class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-grab">
+                                            <i class="ri-drag-move-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">40 seconds</span>
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stretch-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                <div class="h-36 overflow-hidden">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20butterfly%20stretch%20yoga%20pose%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20sitting%20on%20a%20yoga%20mat%20with%20the%20soles%20of%20their%20feet%20pressed%20together%2C%20knees%20falling%20out%20to%20the%20sides%2C%20and%20hands%20gently%20holding%20the%20feet.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20hip-opening%20stretching%20exercise.&width=300&height=200&seq=7&orientation=landscape" alt="Butterfly Stretch" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-medium text-gray-800">Butterfly Stretch</h4>
+                                        <div class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-grab">
+                                            <i class="ri-drag-move-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">50 seconds</span>
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="stretch-card bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+                                <div class="h-36 overflow-hidden">
+                                    <img src="https://readdy.ai/api/search-image?query=A%20person%20performing%20a%20standing%20side%20bend%20stretch%20against%20a%20clean%2C%20minimalist%20background.%20The%20individual%20is%20standing%20on%20a%20yoga%20mat%20with%20feet%20hip-width%20apart%2C%20one%20arm%20extended%20overhead%20and%20body%20bending%20sideways%20in%20a%20gentle%20curve.%20The%20image%20has%20soft%2C%20natural%20lighting%20and%20shows%20proper%20form%20for%20this%20lateral%20stretching%20exercise.&width=300&height=200&seq=8&orientation=landscape" alt="Standing Side Bend" class="w-full h-full object-cover object-top">
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <h4 class="font-medium text-gray-800">Standing Side Bend</h4>
+                                        <div class="w-6 h-6 flex items-center justify-center text-gray-400 cursor-grab">
+                                            <i class="ri-drag-move-line"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-sm text-gray-600">35 seconds</span>
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 flex items-center justify-center text-gray-400 hover:text-gray-600 cursor-pointer">
+                                                <i class="ri-edit-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 flex justify-between items-center">
+                            <button class="flex items-center gap-2 bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-button font-medium hover:bg-gray-50 transition whitespace-nowrap">
+                                <i class="ri-add-line"></i>
+                                <span>Add Stretch</span>
+                            </button>
+                            
+                            <button class="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+                                <i class="ri-play-line"></i>
+                                <span>Start Sequence</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Settings Section -->
+                <section class="mt-12">
+                    <div class="bg-white rounded-xl shadow-md p-8">
+                        <h2 class="text-2xl font-semibold text-gray-800 mb-6">Settings</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800 mb-4">Exercise Preferences</h3>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-700">Sound Effects</span>
+                                        <label class="custom-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-700">Voice Guidance</span>
+                                        <label class="custom-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-700">Background Music</span>
+                                        <label class="custom-switch">
+                                            <input type="checkbox">
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                    
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-700">Haptic Feedback</span>
+                                        <label class="custom-switch">
+                                            <input type="checkbox" checked>
+                                            <span class="switch-slider"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm text-gray-600">Music Volume</span>
+                                        <span class="text-sm font-medium text-gray-800">60%</span>
+                                    </div>
+                                    <input type="range" min="0" max="100" value="60" class="w-full">
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h3 class="text-lg font-medium text-gray-800 mb-4">Notifications</h3>
+                                
+                                <div class="space-y-4">
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <div class="custom-checkbox checked" onclick="this.classList.toggle('checked')"></div>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label class="font-medium text-gray-700">Daily Reminders</label>
+                                            <p class="text-gray-500">Receive reminders to practice at your scheduled time</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <div class="custom-checkbox checked" onclick="this.classList.toggle('checked')"></div>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label class="font-medium text-gray-700">Weekly Progress</label>
+                                            <p class="text-gray-500">Get a summary of your weekly practice</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex items-start">
+                                        <div class="flex items-center h-5">
+                                            <div class="custom-checkbox" onclick="this.classList.toggle('checked')"></div>
+                                        </div>
+                                        <div class="ml-3 text-sm">
+                                            <label class="font-medium text-gray-700">New Content</label>
+                                            <p class="text-gray-500">Be notified when new exercises are added</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="mt-6">
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Reminder Time</label>
+                                    <input type="time" value="07:30" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8 flex justify-end">
+                            <button class="bg-primary text-white px-6 py-3 rounded-button font-medium hover:bg-opacity-90 transition whitespace-nowrap">
+                                Save Settings
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="bg-white border-t border-gray-200 mt-16">
+            <div class="container mx-auto px-6 py-8">
+                <div class="flex flex-col md:flex-row justify-between">
+                    <div class="mb-8 md:mb-0">
+                        <h1 class="text-2xl font-['Pacifico'] text-gray-800 mb-4"><a href="mainpage.html">Health Track</a> </h1>
+                        <p class="text-gray-600 max-w-md">Mindful Movement helps you build a consistent practice of breathing exercises and stretching for improved wellbeing.</p>
+                        
+                        <div class="mt-6 flex space-x-4">
+                            <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                                <i class="ri-facebook-fill"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                                <i class="ri-twitter-x-fill"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                                <i class="ri-instagram-fill"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-primary hover:text-white transition">
+                                <i class="ri-youtube-fill"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-8">
+                        <div>
+                            <h3 class="text-gray-800 font-semibold mb-4">Explore</h3>
+                            <ul class="space-y-2">
+                                <li><a href="breath.html" class="text-gray-600 hover:text-primary transition">Exercises</a></li>
+                                <li><a href="mood.html" class="text-gray-600 hover:text-primary transition">Meditations</a></li>
+                                <li><a href="mainpage.html" class="text-gray-600 hover:text-primary transition">Programs</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Instructors</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-gray-800 font-semibold mb-4">Company</h3>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">About Us</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Careers</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Blog</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Contact</a></li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-gray-800 font-semibold mb-4">Support</h3>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Help Center</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Privacy Policy</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">Terms of Service</a></li>
+                                <li><a href="#" class="text-gray-600 hover:text-primary transition">FAQ</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="border-t border-gray-200 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-600 text-sm">© 2025 Mindful Movement. All rights reserved.</p>
+                    <div class="mt-4 md:mt-0 flex items-center space-x-4">
+                        <div class="flex items-center">
+                            <i class="ri-visa-fill text-2xl text-gray-700 mr-2"></i>
+                            <i class="ri-mastercard-fill text-2xl text-gray-700 mr-2"></i>
+                            <i class="ri-paypal-fill text-2xl text-gray-700"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Breathing exercise functionality
+            const breathingCircle = document.querySelector('.breathing-circle');
+            const phaseText = document.querySelector('.phase-text');
+            const startBreathingBtn = document.getElementById('startBreathingBtn');
+            const breathingTimer = document.getElementById('breathingTimer');
+            const breathingPaceSlider = document.getElementById('breathingPaceSlider');
+            const breathingPaceValue = document.getElementById('breathingPaceValue');
+            
+            let isBreathing = false;
+            let breathingInterval;
+            let breathingPhase = 'inhale';
+            let breathingSeconds = 0;
+            let breathingPace = 4; // seconds per phase
+            
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${mins}:${secs.toString().padStart(2, '0')}`;
+            }
+            
+            function updateBreathingAnimation() {
+                if (breathingPhase === 'inhale') {
+                    breathingCircle.classList.add('inhale');
+                    breathingCircle.classList.remove('exhale');
+                    phaseText.textContent = 'Inhale';
+                } else {
+                    breathingCircle.classList.add('exhale');
+                    breathingCircle.classList.remove('inhale');
+                    phaseText.textContent = 'Exhale';
+                }
+            }
+            
+            function toggleBreathing() {
+                if (isBreathing) {
+                    clearInterval(breathingInterval);
+                    startBreathingBtn.innerHTML = '<i class="ri-play-line"></i><span>Start</span>';
+                } else {
+                    breathingPhase = 'inhale';
+                    updateBreathingAnimation();
+                    
+                    let phaseTimer = 0;
+                    
+                    breathingInterval = setInterval(() => {
+                        breathingSeconds++;
+                        breathingTimer.textContent = formatTime(breathingSeconds);
+                        
+                        phaseTimer++;
+                        
+                        if (phaseTimer >= breathingPace) {
+                            breathingPhase = breathingPhase === 'inhale' ? 'exhale' : 'inhale';
+                            updateBreathingAnimation();
+                            phaseTimer = 0;
+                        }
+                    }, 1000);
+                    
+                    startBreathingBtn.innerHTML = '<i class="ri-pause-line"></i><span>Pause</span>';
+                }
+                
+                isBreathing = !isBreathing;
+            }
+            
+            startBreathingBtn.addEventListener('click', toggleBreathing);
+            
+            breathingPaceSlider.addEventListener('input', function() {
+                breathingPace = parseInt(this.value);
+                breathingPaceValue.textContent = `${breathingPace}s`;
+                
+                // Update breathing circle transition duration
+                breathingCircle.style.transition = `transform ${breathingPace}s ease-in-out, background-color ${breathingPace}s ease-in-out`;
+            });
+            
+            // Drag and drop functionality for stretch cards
+            const stretchCards = document.querySelectorAll('.stretch-card');
+            const stretchContainer = document.getElementById('stretchContainer');
+            
+            let draggedCard = null;
+            
+            stretchCards.forEach(card => {
+                const dragHandle = card.querySelector('.ri-drag-move-line').parentElement;
+                
+                dragHandle.addEventListener('mousedown', function(e) {
+                    draggedCard = card;
+                    card.classList.add('dragging');
+                    
+                    // Calculate offset for smooth dragging
+                    const rect = card.getBoundingClientRect();
+                    const offsetX = e.clientX - rect.left;
+                    const offsetY = e.clientY - rect.top;
+                    
+                    function onMouseMove(e) {
+                        if (!draggedCard) return;
+                        
+                        const x = e.clientX - offsetX;
+                        const y = e.clientY - offsetY;
+                        
+                        draggedCard.style.position = 'absolute';
+                        draggedCard.style.zIndex = 1000;
+                        draggedCard.style.left = `${x}px`;
+                        draggedCard.style.top = `${y}px`;
+                        
+                        // Find the card we're hovering over
+                        const cardBelow = getCardBelow(e.clientX, e.clientY);
+                        if (cardBelow && cardBelow !== draggedCard) {
+                            const rect = cardBelow.getBoundingClientRect();
+                            const centerY = rect.top + rect.height / 2;
+                            
+                            if (e.clientY < centerY) {
+                                stretchContainer.insertBefore(draggedCard, cardBelow);
+                            } else {
+                                stretchContainer.insertBefore(draggedCard, cardBelow.nextSibling);
+                            }
+                        }
+                    }
+                    
+                    function onMouseUp() {
+                        if (!draggedCard) return;
+                        
+                        draggedCard.classList.remove('dragging');
+                        draggedCard.style.position = '';
+                        draggedCard.style.zIndex = '';
+                        draggedCard.style.left = '';
+                        draggedCard.style.top = '';
+                        
+                        draggedCard = null;
+                        
+                        document.removeEventListener('mousemove', onMouseMove);
+                        document.removeEventListener('mouseup', onMouseUp);
+                    }
+                    
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                });
+            });
+            
+            function getCardBelow(x, y) {
+                const cards = [...document.querySelectorAll('.stretch-card:not(.dragging)')];
+                
+                return cards.reduce((closest, card) => {
+                    const rect = card.getBoundingClientRect();
+                    
+                    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                        return card;
+                    }
+                    
+                    return closest;
+                }, null);
+            }
+            
+            // Custom checkbox functionality
+            document.querySelectorAll('.custom-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('click', function() {
+                    this.classList.toggle('checked');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
